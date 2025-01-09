@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'met.freehij.kareliq'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.ow2.asm:asm:9.4'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Premain-Class': 'met.freehij.kareliq.injection.InjectionMain',
+                'Can-Redefine-Classes': true,
+                'Can-Retransform-Classes': true
+        )
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
