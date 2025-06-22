@@ -6,8 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class MovementInputFromOptionsInjection extends ClassTransformerBase {
-    public MovementInputFromOptionsInjection() {
-        super("ln", "a", "(IZ)V", MovementInputVisitor.class);
+    public MovementInputFromOptionsInjection(String className, String methodName, String descriptor) {
+        super(className, methodName, descriptor, MovementInputVisitor.class);
     }
 
     public static class MovementInputVisitor extends MethodVisitor {

@@ -3,7 +3,7 @@ package met.freehij.kareliq.injection.injections;
 import met.freehij.kareliq.injection.ClassTransformerBase;
 
 public class BlockFluidInjection extends ClassTransformerBase {
-    public BlockFluidInjection() {
-        super("rk", "d", "(Lxg;III)F", BlockInjection.BlockVisitor.class);
+    public BlockFluidInjection(String className, String methodName, String descriptor) {
+        super(className, methodName, descriptor, BlockInjection.BlockVisitor.class);
     }
 }

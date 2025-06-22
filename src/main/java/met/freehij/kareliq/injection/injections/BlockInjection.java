@@ -6,10 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class BlockInjection extends ClassTransformerBase {
-    public static boolean lastToggleState = false;
-
-    public BlockInjection() {
-        super("un", "d", "(Lxg;III)F", BlockVisitor.class);
+    public BlockInjection(String className, String methodName, String descriptor) {
+        super(className, methodName, descriptor, BlockVisitor.class);
     }
 
     public static class BlockVisitor extends MethodVisitor {

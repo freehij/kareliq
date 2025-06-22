@@ -11,7 +11,7 @@ public class ReflectionHelper {
     */
     private static Object getMinecraft() throws ClassNotFoundException, IllegalAccessException {
         Class<?> minecraft = Class.forName("net.minecraft.client.Minecraft");
-        Field field = getField(minecraft, "a");
+        Field field = getField(minecraft, "a", "theMinecraft");
         field.setAccessible(true);
         return field.get(null);
     }
@@ -24,10 +24,10 @@ public class ReflectionHelper {
     public static void callUpdateRenderers() {
         try {
             Object mc = getMinecraft();
-            Field renderGlobalField = getField(mc.getClass(), "g");
+            Field renderGlobalField = getField(mc.getClass(), "g", "renderGlobal");
             Object renderGlobal = renderGlobalField.get(mc);
-            getMethod(renderGlobal.getClass(), new Class[]{}, "a").invoke(renderGlobal);
-            getMethod(renderGlobal.getClass(), new Class[]{}, "e").invoke(renderGlobal);
+            getMethod(renderGlobal.getClass(), new Class[]{}, "a", "updateAllRenderers").invoke(renderGlobal);
+            getMethod(renderGlobal.getClass(), new Class[]{}, "e", "loadRenderers").invoke(renderGlobal);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
