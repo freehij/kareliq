@@ -23,7 +23,7 @@ public class ClassMappings {
     };
     public static final MappingUtils.ClassEntry[] GUI_SCREEN = new MappingUtils.ClassEntry[] {
             new MappingUtils.ClassEntry("net/minecraft/src/GuiScreen", MappingUtils.MappingType.MCP),
-            //i forgor freehij pls help me new MappingUtils.ClassEntry("uk", MappingUtils.MappingType.MOJANG)
+            new MappingUtils.ClassEntry("cy", MappingUtils.MappingType.MOJANG)
     };
     public static final MappingUtils.ClassEntry[] WORLD = new MappingUtils.ClassEntry[] {
             new MappingUtils.ClassEntry("net/minecraft/src/World", MappingUtils.MappingType.MCP),
@@ -32,5 +32,13 @@ public class ClassMappings {
     public static final MappingUtils.ClassEntry[] ENTITY_PLAYER_SP = new MappingUtils.ClassEntry[] {
             new MappingUtils.ClassEntry("net/minecraft/src/EntityPlayerSP", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("da", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] ENTITY = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/Entity", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("si", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] GUI_BUTTON = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GuiButton", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("ka", MappingUtils.MappingType.MOJANG)
     };
 }

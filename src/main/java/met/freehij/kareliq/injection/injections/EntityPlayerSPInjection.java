@@ -1,6 +1,10 @@
 package met.freehij.kareliq.injection.injections;
 
 import met.freehij.kareliq.injection.ClassTransformerBase;
+import met.freehij.kareliq.injection.InjectionMain;
+import met.freehij.kareliq.utils.mappings.ClassMappings;
+import met.freehij.kareliq.utils.mappings.FieldMappings;
+import met.freehij.kareliq.utils.mappings.MappingResolver;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -27,6 +31,8 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
         */
         @Override
         public void visitCode() {
+            String entityClass = MappingResolver.resolveClass(ClassMappings.ENTITY);
+
             Label elseLabel = new Label();
             mv.visitFieldInsn(Opcodes.GETSTATIC,
                     "met/freehij/kareliq/module/movement/Flight",
@@ -40,10 +46,12 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
             mv.visitJumpInsn(Opcodes.IFEQ, elseLabel);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitInsn(Opcodes.ICONST_1);
-            mv.visitFieldInsn(Opcodes.PUTFIELD, "da", "aX", "Z");
+            mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass, MappingResolver.resolveField(
+                    entityClass, "Z", FieldMappings.ON_GROUND), "Z");
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitInsn(Opcodes.DCONST_0);
-            mv.visitFieldInsn(Opcodes.PUTFIELD, "da", "aQ", "D");
+            mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass, MappingResolver.resolveField(
+                    entityClass, "D", FieldMappings.MOTION_Y), "D");
             mv.visitLabel(elseLabel);
 
             Label skipNoFallLabel = new Label();
@@ -59,7 +67,8 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
             mv.visitJumpInsn(Opcodes.IFEQ, skipNoFallLabel);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitInsn(Opcodes.FCONST_0);
-            mv.visitFieldInsn(Opcodes.PUTFIELD, "da", "bk", "F");
+            mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass,  MappingResolver.resolveField(
+                    entityClass, "F", FieldMappings.FALL_DISTANCE), "F");
             mv.visitLabel(skipNoFallLabel);
             super.visitCode();
         }

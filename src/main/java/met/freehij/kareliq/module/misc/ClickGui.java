@@ -13,6 +13,6 @@ public class ClickGui extends Module {
     
     @Override
     public void toggle() {
-    	ReflectionHelper.mc_displayScreen(ReflectionHelper.newClickGUI());
+        ReflectionHelper.mc_displayScreen(ReflectionHelper.newClickGUI());
     }
 }

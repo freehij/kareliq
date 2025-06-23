@@ -25,17 +25,17 @@ public class MappingUtils {
         }
     }
 
-    public static class MethodEntry {
-        private final String methodName;
+    public static class MethodFieldEntry {
+        private final String name;
         private final MappingType mappingType;
 
-        public MethodEntry(final String methodName, final MappingType mappingType) {
-            this.methodName = methodName;
+        public MethodFieldEntry(final String name, final MappingType mappingType) {
+            this.name = name;
             this.mappingType = mappingType;
         }
 
-        public String getMethodName() {
-            return methodName;
+        public String getName() {
+            return name;
         }
 
         public MappingType getMappingType() {

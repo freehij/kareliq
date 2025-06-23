@@ -2,18 +2,18 @@ package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.injection.injections.*;
+import met.freehij.kareliq.utils.ReflectionHelper;
 import met.freehij.kareliq.utils.mappings.ClassMappings;
 import met.freehij.kareliq.utils.mappings.MappingResolver;
 import met.freehij.kareliq.utils.mappings.MethodMappings;
 
 import java.lang.instrument.Instrumentation;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
 public final class InjectionMain {
+    public static String playerClass;
+
     public static void premain(final String agentArgs, final Instrumentation instrumentation) {
+        ReflectionHelper.initHelper();
     	
     	String ingameClass = MappingResolver.resolveClass(ClassMappings.GUI_INGAME);
     	String renderGameOverlay = MappingResolver.resolveMethod(ingameClass, "(FZII)V",
@@ -38,11 +38,10 @@ public final class InjectionMain {
                 MethodMappings.CHECK_KEY_FOR_MOVEMENT_INPUT);
         instrumentation.addTransformer(new MovementInputFromOptionsInjection(movementInputClass, movementInputMethod, "(IZ)V"));
 
-        /*String playerClass = MappingResolver.resolveClass(ClassMappings.ENTITY_PLAYER_SP);
+        playerClass = MappingResolver.resolveClass(ClassMappings.ENTITY_PLAYER_SP);
         String updatePlayer = MappingResolver.resolveMethod(playerClass, "()V", MethodMappings.UPDATE_PLAYER_ACTION_STATE);
-        instrumentation.addTransformer(new EntityPlayerSPInjection(playerClass, updatePlayer, "()V"));*/ 
-        //it crashes deobf 1.6.6 </3
-        
+        instrumentation.addTransformer(new EntityPlayerSPInjection(playerClass, updatePlayer, "()V"));
+
         ClientMain.startClient();
     }
 }
