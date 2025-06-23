@@ -62,6 +62,32 @@ public class ClientMain {
         }
     }
     */
+    
+    public static void ClickGUI_initGui(Object dis) {
+    	//initGui
+    	int x = 2;
+    	int y = 20;
+    	int wid = 80;
+    	int hei = 20;
+    	ArrayList controls = ReflectionHelper.GuiScreen_controlList(dis);
+    	
+    	for(int i = 0; i < modules.length; ++i) {
+    		Object button = ReflectionHelper.createButton(i, x, y, wid, hei, modules[i].getName());
+    		controls.add(button);
+    		y += 24;
+    	}
+    }
+    
+    public static void ClickGUI_actionPerformed(Object dis, Object butt) {
+    	int id = ReflectionHelper.GuiButton_id(butt);
+    	modules[id].toggle();
+    }
+    
+    public static void ClickGUI_drawScreen(Object dis, int x, int y, float f) {
+    	ReflectionHelper.FontRenderer_drawString("hi ur currently in gui ^-^", 2, 2, 0xff0000);
+    	ReflectionHelper.FontRenderer_drawString("we hav the follwoin modules:", 2, 12, 0xff0000);
+    }
+    
     public static void renderGuiIngame(Object guiIngame, Object scaledResolution) {
     	ReflectionHelper.FontRenderer_drawString("§6kareliq", 2, 2, Integer.MAX_VALUE);
         if (!ModuleList.INSTANCE.isToggled()) return;
