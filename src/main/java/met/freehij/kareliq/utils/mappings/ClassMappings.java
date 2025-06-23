@@ -17,4 +17,9 @@ public class ClassMappings {
             new MappingUtils.ClassEntry("net/minecraft/src/MovementInputFromOptions", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("ln", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.ClassEntry[] GUI_INGAME = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GuiIngame", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("uk", MappingUtils.MappingType.MOJANG)
+    };
+    
 }

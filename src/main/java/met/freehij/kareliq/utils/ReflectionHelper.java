@@ -32,6 +32,38 @@ public class ReflectionHelper {
             exception.printStackTrace();
         }
     }
+    
+	public static void FontRenderer_drawString(String txt, int x, int y, int color) {
+		try {
+            Object mc = getMinecraft();
+            Field fontRendererFld = getField(mc.getClass(), "q", "fontRenderer");
+            Object fontRenderer = fontRendererFld.get(mc);
+            getMethod(fontRenderer.getClass(), new Class[]{String.class, int.class, int.class, int.class}, "a", "drawString").invoke(fontRenderer, txt, x, y, color);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+	}
+	
+	public static int ScaledResolution_getScaledWidth(Object scaledResolution) {
+		try {
+			return (int) getMethod(scaledResolution.getClass(), new Class[] {}, "a", "getScaledWidth").invoke(scaledResolution);
+		} catch (Exception exception) {
+            exception.printStackTrace();
+            return 0;
+        }
+	}
+	
+	public static int FontRenderer_getStringWidth(String s) {
+		try {
+			Object mc = getMinecraft();
+            Field fontRendererFld = getField(mc.getClass(), "q", "fontRenderer");
+            Object fontRenderer = fontRendererFld.get(mc);
+			return (int) getMethod(fontRenderer.getClass(), new Class[] {String.class}, "a", "getStringWidth").invoke(fontRenderer, s);
+		} catch (Exception exception) {
+            exception.printStackTrace();
+            return 0;
+        }
+	}
 
     public static Field getField(Class c, String... names) {
         for(String name : names) {
@@ -52,4 +84,5 @@ public class ReflectionHelper {
         if(c.getSuperclass() != null) return getMethod(c.getSuperclass(), params, names);
         throw new RuntimeException("Failed to find a method with names "+Arrays.toString(names));
     }
+
 }
