@@ -21,6 +21,10 @@ public class ClassMappings {
             new MappingUtils.ClassEntry("net/minecraft/src/GuiIngame", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("uk", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.ClassEntry[] GUI_SCREEN = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GuiScreen", MappingUtils.MappingType.MCP),
+            //i forgor freehij pls help me new MappingUtils.ClassEntry("uk", MappingUtils.MappingType.MOJANG)
+    };
     public static final MappingUtils.ClassEntry[] WORLD = new MappingUtils.ClassEntry[] {
             new MappingUtils.ClassEntry("net/minecraft/src/World", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("fb", MappingUtils.MappingType.MOJANG)
