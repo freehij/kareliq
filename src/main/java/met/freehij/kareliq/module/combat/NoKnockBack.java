@@ -1,12 +1,12 @@
 package met.freehij.kareliq.module.combat;
 
 import met.freehij.kareliq.module.Module;
-import met.freehij.kareliq.utils.Keys;
+import org.lwjgl.input.Keyboard;
 
 public class NoKnockBack extends Module {
     public static final NoKnockBack INSTANCE = new NoKnockBack();
 
     protected NoKnockBack() {
-        super("NoKnockBack", Keys.KEY_N);
+        super("NoKnockBack", Keyboard.KEY_N);
     }
 }

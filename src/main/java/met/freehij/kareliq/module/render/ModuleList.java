@@ -1,12 +1,12 @@
 package met.freehij.kareliq.module.render;
 
 import met.freehij.kareliq.module.Module;
-import met.freehij.kareliq.utils.Keys;
+import org.lwjgl.input.Keyboard;
 
 public class ModuleList extends Module {
     public static final ModuleList INSTANCE = new ModuleList();
 
     protected ModuleList() {
-        super("ModuleList", Keys.KEY_Y);
+        super("ModuleList", Keyboard.KEY_Y);
     }
 }

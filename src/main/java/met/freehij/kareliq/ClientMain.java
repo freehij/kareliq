@@ -5,6 +5,7 @@ import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
 import met.freehij.kareliq.module.misc.ClickGui;
 import met.freehij.kareliq.module.misc.FastBreak;
+import met.freehij.kareliq.module.movement.GuiWalk;
 import met.freehij.kareliq.module.movement.NoFallDamage;
 import met.freehij.kareliq.module.movement.Flight;
 import met.freehij.kareliq.module.movement.LiquidWalk;
@@ -29,6 +30,7 @@ public class ClientMain {
         moduleList.add(FullBright.INSTANCE);
         moduleList.add(LiquidWalk.INSTANCE);
         moduleList.add(ClickGui.INSTANCE);
+        moduleList.add(GuiWalk.INSTANCE);
         moduleList.add(Flight.INSTANCE);
         moduleList.add(Aura.INSTANCE);
 

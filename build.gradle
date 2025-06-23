@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     implementation 'org.ow2.asm:asm:9.4'
+    compileOnly 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 }
 
 jar {

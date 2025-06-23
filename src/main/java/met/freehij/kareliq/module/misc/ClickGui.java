@@ -1,14 +1,14 @@
 package met.freehij.kareliq.module.misc;
 
 import met.freehij.kareliq.module.Module;
-import met.freehij.kareliq.utils.Keys;
 import met.freehij.kareliq.utils.ReflectionHelper;
+import org.lwjgl.input.Keyboard;
 
 public class ClickGui extends Module {
     public static final ClickGui INSTANCE = new ClickGui();
 
     protected ClickGui() {
-        super("ClickGui", Keys.KEY_RSHIFT);
+        super("ClickGui", Keyboard.KEY_RSHIFT);
     }
     
     @Override
