@@ -21,5 +21,12 @@ public class ClassMappings {
             new MappingUtils.ClassEntry("net/minecraft/src/GuiIngame", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("uk", MappingUtils.MappingType.MOJANG)
     };
-    
+    public static final MappingUtils.ClassEntry[] WORLD = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/World", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("fb", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] ENTITY_PLAYER_SP = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/EntityPlayerSP", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("da", MappingUtils.MappingType.MOJANG)
+    };
 }

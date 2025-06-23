@@ -38,7 +38,7 @@ public class ReflectionHelper {
             Object mc = getMinecraft();
             Field fontRendererFld = getField(mc.getClass(), "q", "fontRenderer");
             Object fontRenderer = fontRendererFld.get(mc);
-            getMethod(fontRenderer.getClass(), new Class[]{String.class, int.class, int.class, int.class}, "a", "drawString").invoke(fontRenderer, txt, x, y, color);
+            getMethod(fontRenderer.getClass(), new Class[]{String.class, int.class, int.class, int.class}, "a", "drawStringWithShadow").invoke(fontRenderer, txt, x, y, color);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

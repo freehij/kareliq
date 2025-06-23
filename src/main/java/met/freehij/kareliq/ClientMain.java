@@ -64,6 +64,7 @@ public class ClientMain {
     */
     public static void renderGuiIngame(Object guiIngame, Object scaledResolution) {
     	ReflectionHelper.FontRenderer_drawString("§6kareliq", 2, 2, Integer.MAX_VALUE);
+        if (!ModuleList.INSTANCE.isToggled()) return;
     	int i = 2;
     	for (Module module : ClientMain.modules) {
     		if(module.isToggled()) {

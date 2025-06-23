@@ -6,8 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class EntityPlayerSPInjection extends ClassTransformerBase {
-    public EntityPlayerSPInjection() {
-        super("da", "e_", "()V", EntityPlayerSPVisitor.class);
+    public EntityPlayerSPInjection(String className, String methodName, String descriptor) {
+        super(className, methodName, descriptor, EntityPlayerSPVisitor.class);
     }
 
     public static class EntityPlayerSPVisitor extends MethodVisitor {

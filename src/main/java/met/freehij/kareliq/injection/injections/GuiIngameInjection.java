@@ -46,7 +46,9 @@ public class GuiIngameInjection extends ClassTransformerBase {
         	//ClientMain.renderGuiIngame(this);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitVarInsn(Opcodes.ALOAD, 5);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "met/freehij/kareliq/ClientMain", "renderGuiIngame", "(Ljava/lang/Object;Ljava/lang/Object;)V", false);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                    "met/freehij/kareliq/ClientMain", "renderGuiIngame", "(Ljava/lang/Object;Ljava/lang/Object;)V",
+                    false);
         }
     }
 }

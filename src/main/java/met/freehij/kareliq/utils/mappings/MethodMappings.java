@@ -13,4 +13,12 @@ public class MethodMappings {
             new MappingUtils.MethodEntry("renderGameOverlay", MappingUtils.MappingType.MCP),
             new MappingUtils.MethodEntry("a", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.MethodEntry[] GET_BRIGHTNESS = new MappingUtils.MethodEntry[] {
+            new MappingUtils.MethodEntry("getBrightness", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodEntry("c", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodEntry[] UPDATE_PLAYER_ACTION_STATE = new MappingUtils.MethodEntry[] {
+            new MappingUtils.MethodEntry("updatePlayerActionState", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodEntry("e_", MappingUtils.MappingType.MOJANG)
+    };
 }
