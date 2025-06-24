@@ -7,6 +7,6 @@ public class ModuleList extends Module {
     public static final ModuleList INSTANCE = new ModuleList();
 
     protected ModuleList() {
-        super("ModuleList", Keyboard.KEY_Y);
+        super("ModuleList", Keyboard.KEY_NONE);
     }
 }

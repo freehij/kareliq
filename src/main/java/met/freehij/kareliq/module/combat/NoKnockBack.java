@@ -7,6 +7,6 @@ public class NoKnockBack extends Module {
     public static final NoKnockBack INSTANCE = new NoKnockBack();
 
     protected NoKnockBack() {
-        super("NoKnockBack", Keyboard.KEY_N);
+        super("NoKnockBack", Keyboard.KEY_NONE);
     }
 }

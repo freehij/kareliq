@@ -1,12 +1,11 @@
 package met.freehij.kareliq.injection.injections;
 
 import met.freehij.kareliq.injection.ClassTransformerBase;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class MovementInputFromOptionsInjection extends ClassTransformerBase {
-    public MovementInputFromOptionsInjection(String className, String methodName, String descriptor) {
+public class MovementInputFromOptionsInjection1 extends ClassTransformerBase {
+    public MovementInputFromOptionsInjection1(String className, String methodName, String descriptor) {
         super(className, methodName, descriptor, MovementInputVisitor.class);
     }
 

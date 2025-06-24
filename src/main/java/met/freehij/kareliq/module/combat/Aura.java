@@ -7,6 +7,6 @@ public class Aura extends Module {
     public static final Aura INSTANCE = new Aura();
 
     protected Aura() {
-        super("Aura", Keyboard.KEY_R);
+        super("Aura", Keyboard.KEY_NONE);
     }
 }

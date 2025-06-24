@@ -18,7 +18,7 @@ public class BlockInjection extends ClassTransformerBase {
         /*
         roughly equivalent to:
         public float getBlockBrightness(IBlockAccess blockAccess, int x, int y, int z) {
-            if (met.freehij.kareliq.module.render.MaxBright.INSTANCE.isToggled()) return 1.0F;
+            if (met.freehij.kareliq.module.render.FullBright.INSTANCE.isToggled()) return 1.0F;
             ...
         }
         */

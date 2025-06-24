@@ -1,5 +1,7 @@
 package met.freehij.kareliq;
 
+import met.freehij.kareliq.command.Command;
+import met.freehij.kareliq.command.commands.*;
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
@@ -14,27 +16,54 @@ import met.freehij.kareliq.module.render.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
 import met.freehij.kareliq.utils.ReflectionHelper;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClientMain {
+    public static boolean loaded = false;
+    public static String name = "kareliq";
+    public static String version = "1.0dev";
+    public static String note = "This is note. You can remove it with ;unnote and set with ;note";
+    public static String configFile = "kareliq/config.liza";
+
     public static Module[] modules;
+    public static Command[] commands;
 
     public static void startClient() {
-        List<Module> moduleList = new ArrayList<>();
-        moduleList.add(NoFallDamage.INSTANCE);
-        moduleList.add(NoKnockBack.INSTANCE);
-        moduleList.add(FastBreak.INSTANCE);
-        moduleList.add(ModuleList.INSTANCE);
-        moduleList.add(OreViewer.INSTANCE);
-        moduleList.add(FullBright.INSTANCE);
-        moduleList.add(LiquidWalk.INSTANCE);
-        moduleList.add(ClickGui.INSTANCE);
-        moduleList.add(GuiWalk.INSTANCE);
-        moduleList.add(Flight.INSTANCE);
-        moduleList.add(Aura.INSTANCE);
-
-        modules = moduleList.toArray(new Module[0]);
+        modules = new Module[] {
+                NoFallDamage.INSTANCE,
+                NoKnockBack.INSTANCE,
+                FastBreak.INSTANCE,
+                ModuleList.INSTANCE,
+                OreViewer.INSTANCE,
+                FullBright.INSTANCE,
+                LiquidWalk.INSTANCE,
+                ClickGui.INSTANCE,
+                GuiWalk.INSTANCE,
+                Flight.INSTANCE,
+                Aura.INSTANCE
+        };
+        commands = new Command[] {
+                new Bind(),
+                new Help(),
+                new ClientName(),
+                new Note(),
+                new UnNote()
+        };
+        loadConfig();
+        loaded = true;
+        new Thread(() -> {
+            while (loaded) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ignored) {}
+                saveConfig();
+            }
+        }).start();
     }
     
     public static void handleKeypress(int key, boolean pressed) {
@@ -91,7 +120,8 @@ public class ClientMain {
     }
     
     public static void renderGuiIngame(Object guiIngame, Object scaledResolution) {
-    	ReflectionHelper.FontRenderer_drawString("§6kareliq", 2, 2, Integer.MAX_VALUE);
+    	ReflectionHelper.FontRenderer_drawString("§6" + name + " §f" + version, 2, 2, Integer.MAX_VALUE);
+        ReflectionHelper.FontRenderer_drawString(note, 2, 12, Integer.MAX_VALUE);
         if (!ModuleList.INSTANCE.isToggled()) return;
     	int i = 2;
     	for (Module module : ClientMain.modules) {
@@ -103,5 +133,72 @@ public class ClientMain {
     			i += 10;
     		}
     	}
+    }
+
+    public static Module getModuleByName(String name) {
+        for (Module module : modules) {
+            if (module.getName().equalsIgnoreCase(name)) return module;
+        }
+        return null;
+    }
+
+    public static boolean handleCommand(String message) {
+        String[] split = message.split(" ");
+        String command = split[0];
+        if (!command.startsWith(";")) return false;
+        command = command.substring(1);
+        for (Command cmd : commands) {
+            if (cmd.getName().equals(command)) {
+                String[] args = new String[split.length - 1];
+                System.arraycopy(split, 1, args, 0, split.length - 1);
+                if (!cmd.execute(args)) ReflectionHelper.addChatMessage("Usage: " + cmd.getUsage());
+                return true;
+            }
+        }
+        ReflectionHelper.addChatMessage("Unknown command: " + command);
+        return true;
+    }
+
+    public static void saveConfig() { //TODO: better config format
+        String finalText = name.replace(":", ";") + ":" + version + ":" + note.replace(":", ";") + "\n";
+        for (Module module : modules) {
+            finalText += module.getName() + ":" + module.isToggled() + ":" + module.getKeyBind() + "\n";
+        }
+        try {
+            Path configPath = Paths.get(configFile);
+            Files.createDirectories(configPath.getParent());
+            Files.write(
+                    configPath,
+                    finalText.getBytes(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING,
+                    StandardOpenOption.WRITE
+            );
+        } catch (IOException e) {
+            System.out.println("Could not save config!");
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadConfig() { //TODO: better config format
+        try {
+            String[] content = new String(Files.readAllBytes(Paths.get(configFile))).split("\n");
+            String[] textVariables = content[0].split(":");
+            name = textVariables[0];
+            note = textVariables[2];
+            String[] moduleInfo = new String[content.length - 1];
+            System.arraycopy(content, 1, moduleInfo, 0, content.length - 1);
+            for (String info : moduleInfo) {
+                String[] split = info.split(":");
+                Module module = getModuleByName(split[0]);
+                if (module == null) continue;
+                if (Boolean.parseBoolean(split[1])) module.toggle();
+                module.setKeyBind(Integer.parseInt(split[2]));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Could not load config! Saving current configuration...");
+            saveConfig();
+        }
     }
 }

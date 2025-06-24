@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 public class GuiWalk extends Module {
     public static final GuiWalk INSTANCE = new GuiWalk();
 
-    public GuiWalk() {
-        super("GuiWalk", Keyboard.KEY_L);
+    protected GuiWalk() {
+        super("GuiWalk", Keyboard.KEY_NONE);
     }
 }

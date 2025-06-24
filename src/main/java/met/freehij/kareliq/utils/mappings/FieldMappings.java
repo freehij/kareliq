@@ -21,4 +21,20 @@ public class FieldMappings {
             new MappingUtils.MethodFieldEntry("id", MappingUtils.MappingType.MCP),
             new MappingUtils.MethodFieldEntry("f", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.MethodFieldEntry[] MOVEMENT_KEY_STATES = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("movementKeyStates", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("f", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] GAME_SETTINGS = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("gameSettings", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("z", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] KEY_BINDINGS = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("keyBindings", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("w", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] KEY_CODE = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("keyCode", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("b", MappingUtils.MappingType.MOJANG)
+    };
 }

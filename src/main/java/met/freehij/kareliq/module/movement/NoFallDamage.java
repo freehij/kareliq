@@ -7,6 +7,6 @@ public class NoFallDamage extends Module {
     public static final NoFallDamage INSTANCE = new NoFallDamage();
 
     protected NoFallDamage() {
-        super("NoFallDamage", Keyboard.KEY_M);
+        super("NoFallDamage", Keyboard.KEY_NONE);
     }
 }

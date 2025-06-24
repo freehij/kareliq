@@ -41,4 +41,52 @@ public class ClassMappings {
             new MappingUtils.ClassEntry("net/minecraft/src/GuiButton", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("ka", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.ClassEntry[] ENTITY_PLAYER = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/EntityPlayer", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("gq", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] PLAYER_CONTROLLER = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/PlayerController", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("nx", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] PLAYER_CONTROLLER_SP = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/PlayerControllerSP", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("oo", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] PLAYER_CONTROLLER_MP = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/PlayerControllerMP", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("xb", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] PACKET = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/Packet", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("ke", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] PACKET14 = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/Packet14BlockDig", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("jr", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] NET_CLIENT_HANDLER = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/NetClientHandler", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("mx", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] GAME_SETTINGS = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GameSettings", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("kr", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] KEY_BINDING = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/KeyBinding", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("px", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] GUI_CHAT = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GuiChat", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("ga", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] GUI_CONTROLS = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/GuiControls", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("uj", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.ClassEntry[] BOUNDING_BOX = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/AxisAlignedBB", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("eo", MappingUtils.MappingType.MOJANG)
+    };
 }

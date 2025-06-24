@@ -37,8 +37,28 @@ public class MethodMappings {
             new MappingUtils.MethodFieldEntry("actionPerformed", MappingUtils.MappingType.MCP),
             new MappingUtils.MethodFieldEntry("a", MappingUtils.MappingType.MOJANG)
     };
-    public static final MappingUtils.MethodFieldEntry[] ON_GUI_CLOSED = new MappingUtils.MethodFieldEntry[] {
-            new MappingUtils.MethodFieldEntry("onGuiClosed", MappingUtils.MappingType.MCP),
-            new MappingUtils.MethodFieldEntry("h", MappingUtils.MappingType.MOJANG)
+    public static final MappingUtils.MethodFieldEntry[] UPDATE_MOVE_STATE = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("updatePlayerMoveState", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("a", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] SEND_BLOCK_REMOVED = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("sendBlockRemoved", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("b", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] CLICK_BLOCK = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("clickBlock", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("a", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] ADD_TO_SEND_QUEUE = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("addToSendQueue", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("b", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] GET_COLLISION_BB = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("getCollisionBoundingBoxFromPool", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("d", MappingUtils.MappingType.MOJANG)
+    };
+    public static final MappingUtils.MethodFieldEntry[] IS_LINE_COMMAND = new MappingUtils.MethodFieldEntry[] {
+            new MappingUtils.MethodFieldEntry("lineIsCommand", MappingUtils.MappingType.MCP),
+            new MappingUtils.MethodFieldEntry("b", MappingUtils.MappingType.MOJANG)
     };
 }

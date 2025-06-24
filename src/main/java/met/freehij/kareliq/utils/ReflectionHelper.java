@@ -5,8 +5,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import met.freehij.kareliq.ClientMain;
+import met.freehij.kareliq.module.misc.FastBreak;
 import met.freehij.kareliq.utils.mappings.FieldMappings;
 import met.freehij.kareliq.utils.mappings.MethodMappings;
+import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -24,8 +27,17 @@ public class ReflectionHelper {
 	private static String buttonId;
 	private static String controlListField;
 	private static String actionPerformed;
+	private static String sendBlockRemovedMethod;
+	private static String packetClass;
+	private static String addToSendQueueMethod;
+	private static String packet14Class;
+    private static String gameSettingsField;
+	private static String keyBindingsField;
+	private static String keyCodeField;
+	private static String guiChatClass;
+	private static String guiControlsClass;
 
-	public static void initHelper() {
+    public static void initHelper() {
 		guiScreenClass = MappingResolver.resolveClass(ClassMappings.GUI_SCREEN);
 		displayGuiScreenMethod = MappingResolver.resolveMethod("net/minecraft/client/Minecraft",
 				"(L" + guiScreenClass + ";)V", MethodMappings.DISPLAY_SCREEN);
@@ -36,6 +48,22 @@ public class ReflectionHelper {
 		controlListField = MappingResolver.resolveField(guiScreenClass, "Ljava/util/List;", FieldMappings.CONTROL_LIST);
 		actionPerformed = MappingResolver.resolveMethod(guiScreenClass, "(L" + guiButtonClass + ";)V",
 				MethodMappings.ACTION_PERFORMED);
+        String playerControllerClass = MappingResolver.resolveClass(ClassMappings.PLAYER_CONTROLLER);
+		sendBlockRemovedMethod = MappingResolver.resolveMethod(playerControllerClass, "(IIII)Z",
+				MethodMappings.SEND_BLOCK_REMOVED);
+		packetClass = MappingResolver.resolveClass(ClassMappings.PACKET);
+        String netClientHandlerClass = MappingResolver.resolveClass(ClassMappings.NET_CLIENT_HANDLER);
+		addToSendQueueMethod = MappingResolver.resolveMethod(netClientHandlerClass, "(L" + packetClass + ";)V", MethodMappings.ADD_TO_SEND_QUEUE);
+		packet14Class = MappingResolver.resolveClass(ClassMappings.PACKET14);
+		String gameSettingsClass = MappingResolver.resolveClass(ClassMappings.GAME_SETTINGS);
+		gameSettingsField = MappingResolver.resolveField("net/minecraft/client/Minecraft",
+				"L" + gameSettingsClass + ";", FieldMappings.GAME_SETTINGS);
+        String keyBindingClass = MappingResolver.resolveClass(ClassMappings.KEY_BINDING);
+		keyBindingsField = MappingResolver.resolveField(gameSettingsClass, "[L" + keyBindingClass + ";",
+				FieldMappings.KEY_BINDINGS);
+		keyCodeField = MappingResolver.resolveField(keyBindingClass, "I", FieldMappings.KEY_CODE);
+		guiChatClass = MappingResolver.resolveClass(ClassMappings.GUI_CHAT);
+		guiControlsClass = MappingResolver.resolveClass(ClassMappings.GUI_CONTROLS);
 	}
 
     /*
@@ -191,8 +219,6 @@ public class ReflectionHelper {
 		}
 	}
 
-
-
 	public static int GuiButton_id(Object butt) {
 		try {
 			return getField(butt.getClass(), buttonId).getInt(butt);
@@ -211,6 +237,84 @@ public class ReflectionHelper {
             exception.printStackTrace();
             return null;
         }
+	}
+
+	public static boolean[] updateMovementKeyStates(boolean[] origStates) throws ClassNotFoundException,
+			IllegalAccessException, NoSuchFieldException { //TODO: fix key stuck for pausing guis
+		Object mc = getMinecraft();
+
+		Object currentScreen = getField(mc.getClass(), "currentScreen", "r").get(mc);
+		if (currentScreen == null) return origStates;
+		Class<?> guiChat = Class.forName(guiChatClass.replace("/", "."));
+		Class<?> guiControls = Class.forName(guiControlsClass.replace("/", "."));
+		if (currentScreen.getClass().isAssignableFrom(guiChat)
+				|| currentScreen.getClass().isAssignableFrom(guiControls)) {
+			return new boolean[] {false, false, false, false, false, false, false, false, false, false}; //to avoid bugs
+		}
+
+		Object gameSettings = getField(mc.getClass(), gameSettingsField).get(mc);
+		Object[] keyBindings = (Object[]) getField(gameSettings.getClass(), keyBindingsField).get(gameSettings);
+		return new boolean[] {
+				Keyboard.isKeyDown(keyBindings[0].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[0])),
+				Keyboard.isKeyDown(keyBindings[2].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[2])),
+				Keyboard.isKeyDown(keyBindings[1].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[1])),
+				Keyboard.isKeyDown(keyBindings[3].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[3])),
+				Keyboard.isKeyDown(keyBindings[4].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[4])),
+				Keyboard.isKeyDown(keyBindings[5].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[5])),
+				false, false, false, false //goofy ahh notch making it 10 for absolutely no fucking reason
+		};
+	}
+
+	public static void awtysm_method(Object playerController, int x, int y, int z, int side) {
+		if (!FastBreak.INSTANCE.isToggled()) return;
+		try {
+			playerController.getClass().getDeclaredMethod(sendBlockRemovedMethod, int.class, int.class, int.class, int.class).invoke(
+					playerController, x, y, z, side);
+			sendBlockRemovedPacket(x, y, z, side, 0);
+			sendBlockRemovedPacket(x, y, z, side, 2);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public static void sendBlockRemovedPacket(int x, int y, int z, int side, int state) {
+		try {
+			Object mc = getMinecraft();
+			Object sendQueue = getMethod(mc.getClass(), new Class[0], "getSendQueue", "func_20001_q", "s").invoke(mc);
+			if (sendQueue != null) {
+				Method m = getMethod(sendQueue.getClass(), new Class[]{Class.forName(packetClass.replace("/", "."))},
+						addToSendQueueMethod);
+				m.invoke(sendQueue, Class.forName(packet14Class.replace("/", ".")).getConstructor(int.class, int.class,
+						int.class, int.class, int.class).newInstance(state, x, y, z, side));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void setButtonText(Object button, String text) { //TODO: dont forget about this method existing
+		try {
+			getField(button.getClass(), "displayString", "e").set(button, text);
+		} catch (Exception ignored) {}
+	}
+
+	public static Object createBoundingBox() { //TODO: and this one too
+		return new Object();
+	}
+
+	public static void addChatMessage(String message) {
+		addChatMessage(message, false);
+	}
+
+	public static void addChatMessage(String message, boolean prefix) {
+		try {
+			Object mc = getMinecraft();
+			Object inGameGui = getField(mc.getClass(), "ingameGUI", "v").get(mc);
+			getMethod(inGameGui.getClass(), new Class[]{String.class}, "func_22064_c", "c").invoke(inGameGui,
+					(prefix ? "[" + ClientMain.name + "§f] " : "") + message);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
     public static Field getField(Class c, String... names) {

@@ -21,7 +21,6 @@ public abstract class Module {
 
     public void toggle() {
         this.toggled = !this.toggled;
-        System.out.println("Toggled " + this.name + " (" + (this.toggled ? "on" : "off") + ")");
     }
 
     public int getKeyBind() {
