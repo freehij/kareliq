@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import met.freehij.kareliq.ClientMain;
+import met.freehij.kareliq.injection.InjectionMain;
 import met.freehij.kareliq.module.misc.FastBreak;
 import met.freehij.kareliq.utils.mappings.FieldMappings;
 import met.freehij.kareliq.utils.mappings.MethodMappings;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -239,22 +241,23 @@ public class ReflectionHelper {
         }
 	}
 
-	public static boolean[] updateMovementKeyStates(boolean[] origStates) throws ClassNotFoundException,
+	public static void updateMovementKeyStates(Object player) throws ClassNotFoundException,
 			IllegalAccessException, NoSuchFieldException { //TODO: fix key stuck for pausing guis
 		Object mc = getMinecraft();
 
 		Object currentScreen = getField(mc.getClass(), "currentScreen", "r").get(mc);
-		if (currentScreen == null) return origStates;
-		Class<?> guiChat = Class.forName(guiChatClass.replace("/", "."));
-		Class<?> guiControls = Class.forName(guiControlsClass.replace("/", "."));
-		if (currentScreen.getClass().isAssignableFrom(guiChat)
-				|| currentScreen.getClass().isAssignableFrom(guiControls)) {
-			return new boolean[] {false, false, false, false, false, false, false, false, false, false}; //to avoid bugs
+		if (currentScreen != null) {
+			Class<?> guiChat = Class.forName(guiChatClass.replace("/", "."));
+			Class<?> guiControls = Class.forName(guiControlsClass.replace("/", "."));
+			if (currentScreen.getClass().isAssignableFrom(guiChat)
+					|| currentScreen.getClass().isAssignableFrom(guiControls)) {
+				return;
+			}
 		}
 
 		Object gameSettings = getField(mc.getClass(), gameSettingsField).get(mc);
 		Object[] keyBindings = (Object[]) getField(gameSettings.getClass(), keyBindingsField).get(gameSettings);
-		return new boolean[] {
+		boolean[] tspmo = new boolean[] {
 				Keyboard.isKeyDown(keyBindings[0].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[0])),
 				Keyboard.isKeyDown(keyBindings[2].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[2])),
 				Keyboard.isKeyDown(keyBindings[1].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[1])),
@@ -263,6 +266,12 @@ public class ReflectionHelper {
 				Keyboard.isKeyDown(keyBindings[5].getClass().getDeclaredField(keyCodeField).getInt(keyBindings[5])),
 				false, false, false, false //goofy ahh notch making it 10 for absolutely no fucking reason
 		};
+
+		Object movementInput = getField(player.getClass(), "movementInput", "a").get(player);
+		Field movementKeyStates = getField(Class.forName(InjectionMain.movementInputClass.replace("/", ".")),
+				"movementKeyStates", "f");
+		movementKeyStates.setAccessible(true);
+		movementKeyStates.set(movementInput, tspmo);
 	}
 
 	public static void awtysm_method(Object playerController, int x, int y, int z, int side) {
@@ -317,6 +326,17 @@ public class ReflectionHelper {
 		}
 	}
 
+	public static void gui_drawRect(Object gui, int x1, int y1, int x2, int y2, int color) {
+		try {
+			Method drawRect = getMethod(gui.getClass(), new Class[]{int.class,int.class,int.class,int.class,int.class},
+					"drawRect","a");
+			drawRect.setAccessible(true);
+			drawRect.invoke(gui, x1, y1, x2, y2, color);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
     public static Field getField(Class c, String... names) {
         for(String name : names) {
             try {
@@ -336,5 +356,4 @@ public class ReflectionHelper {
         if(c.getSuperclass() != null) return getMethod(c.getSuperclass(), params, names);
         throw new RuntimeException("Failed to find a method with names "+Arrays.toString(names));
     }
-
 }

@@ -15,6 +15,7 @@ import met.freehij.kareliq.module.render.FullBright;
 import met.freehij.kareliq.module.render.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
 import met.freehij.kareliq.utils.ReflectionHelper;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.file.Files;

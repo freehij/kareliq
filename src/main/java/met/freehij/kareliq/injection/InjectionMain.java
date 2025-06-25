@@ -49,11 +49,6 @@ public final class InjectionMain {
                 MethodMappings.CHECK_KEY_FOR_MOVEMENT_INPUT);
         instrumentation.addTransformer(new MovementInputFromOptionsInjection1(movementInputClass, movementInputMethod,
                 "(IZ)V"));
-        String updateMoveStateDescriptor = "(L" + MappingResolver.resolveClass(ClassMappings.ENTITY_PLAYER) +";)V";
-        String updateMoveState = MappingResolver.resolveMethod(movementInputClass, updateMoveStateDescriptor,
-                MethodMappings.UPDATE_MOVE_STATE);
-        instrumentation.addTransformer(new MovementInputFromOptionsInjection2(movementInputClass, updateMoveState,
-                updateMoveStateDescriptor));
 
         playerClass = MappingResolver.resolveClass(ClassMappings.ENTITY_PLAYER_SP);
         String updatePlayer = MappingResolver.resolveMethod(playerClass, "()V",

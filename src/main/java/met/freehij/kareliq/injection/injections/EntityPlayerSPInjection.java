@@ -70,6 +70,14 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
             mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass,  MappingResolver.resolveField(
                     entityClass, "F", FieldMappings.FALL_DISTANCE), "F");
             mv.visitLabel(skipNoFallLabel);
+
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                    "met/freehij/kareliq/utils/ReflectionHelper",
+                    "updateMovementKeyStates",
+                    "(Ljava/lang/Object;)V",
+                    false
+            );
             super.visitCode();
         }
     }
