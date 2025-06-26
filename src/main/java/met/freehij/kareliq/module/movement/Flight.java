@@ -7,6 +7,6 @@ public class Flight extends Module {
     public static final Flight INSTANCE = new Flight();
 
     protected Flight() {
-        super("Flight", Keyboard.KEY_NONE);
+        super("Flight", Keyboard.KEY_NONE, Category.MOVEMENT);
     }
 }

@@ -20,12 +20,12 @@ public class BlockFluidInjection2 extends ClassTransformerBase {
         public void visitCode() {
             mv.visitFieldInsn(
                     Opcodes.GETSTATIC,
-                    "met/freehij/kareliq/module/movement/LiquidWalk",
+                    "met/freehij/kareliq/module/world/LiquidWalk",
                     "INSTANCE",
-                    "Lmet/freehij/kareliq/module/movement/LiquidWalk;");
+                    "Lmet/freehij/kareliq/module/world/LiquidWalk;");
             mv.visitMethodInsn(
                     Opcodes.INVOKEVIRTUAL,
-                    "met/freehij/kareliq/module/movement/LiquidWalk",
+                    "met/freehij/kareliq/module/world/LiquidWalk",
                     "isToggled",
                     "()Z",
                     false);

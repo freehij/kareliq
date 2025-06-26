@@ -7,6 +7,6 @@ public class OreViewer extends Module {
     public static final OreViewer INSTANCE = new OreViewer();
 
     protected OreViewer() {
-        super("OreViewer", Keyboard.KEY_NONE);
+        super("OreViewer", Keyboard.KEY_NONE, Category.RENDER);
     }
 }

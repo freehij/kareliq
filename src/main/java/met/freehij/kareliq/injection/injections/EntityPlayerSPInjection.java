@@ -25,7 +25,7 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
             this.onGround = true;
             this.motionY = 0D;
         }
-        if (met.freehij.kareliq.module.movement.NoFallDamage.INSTANCE.isToggled()) {
+        if (met.freehij.kareliq.module.player.NoFallDamage.INSTANCE.isToggled()) {
             this.fallDistance = 0F;
         }
         */
@@ -47,7 +47,7 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass, MappingResolver.resolveField(
-                    entityClass, "Z", FieldMappings.ON_GROUND), "Z");
+                    entityClass, "Z", FieldMappings.ON_GROUND_ENTITY), "Z");
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitInsn(Opcodes.DCONST_0);
             mv.visitFieldInsn(Opcodes.PUTFIELD, InjectionMain.playerClass, MappingResolver.resolveField(
@@ -56,11 +56,11 @@ public class EntityPlayerSPInjection extends ClassTransformerBase {
 
             Label skipNoFallLabel = new Label();
             mv.visitFieldInsn(Opcodes.GETSTATIC,
-                    "met/freehij/kareliq/module/movement/NoFallDamage",
+                    "met/freehij/kareliq/module/player/NoFallDamage",
                     "INSTANCE",
-                    "Lmet/freehij/kareliq/module/movement/NoFallDamage;");
+                    "Lmet/freehij/kareliq/module/player/NoFallDamage;");
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                    "met/freehij/kareliq/module/movement/NoFallDamage",
+                    "met/freehij/kareliq/module/player/NoFallDamage",
                     "isToggled",
                     "()Z",
                     false);

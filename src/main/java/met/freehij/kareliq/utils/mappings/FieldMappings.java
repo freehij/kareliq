@@ -1,7 +1,7 @@
 package met.freehij.kareliq.utils.mappings;
 
 public class FieldMappings {
-    public static final MappingUtils.MethodFieldEntry[] ON_GROUND = new MappingUtils.MethodFieldEntry[] {
+    public static final MappingUtils.MethodFieldEntry[] ON_GROUND_ENTITY = new MappingUtils.MethodFieldEntry[] {
             new MappingUtils.MethodFieldEntry("onGround", MappingUtils.MappingType.MCP),
             new MappingUtils.MethodFieldEntry("aX", MappingUtils.MappingType.MOJANG)
     };

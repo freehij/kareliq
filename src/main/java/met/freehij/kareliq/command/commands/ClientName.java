@@ -11,7 +11,7 @@ public class ClientName extends Command {
     @Override
     public boolean execute(String[] args) {
         if (args.length < 1) return false;
-        ClientMain.name = this.argsToString(args);
+        ClientMain.name = this.argsToString(args).replace("&", "§");
         return true;
     }
 }

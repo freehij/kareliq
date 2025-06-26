@@ -7,6 +7,6 @@ public class GuiWalk extends Module {
     public static final GuiWalk INSTANCE = new GuiWalk();
 
     protected GuiWalk() {
-        super("GuiWalk", Keyboard.KEY_NONE);
+        super("GuiWalk", Keyboard.KEY_NONE, Category.MOVEMENT);
     }
 }

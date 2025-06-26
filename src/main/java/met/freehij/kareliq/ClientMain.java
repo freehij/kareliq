@@ -5,17 +5,16 @@ import met.freehij.kareliq.command.commands.*;
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
-import met.freehij.kareliq.module.misc.ClickGui;
-import met.freehij.kareliq.module.misc.FastBreak;
+import met.freehij.kareliq.module.client.ClickGui;
+import met.freehij.kareliq.module.world.FastBreak;
 import met.freehij.kareliq.module.movement.GuiWalk;
-import met.freehij.kareliq.module.movement.NoFallDamage;
+import met.freehij.kareliq.module.player.NoFallDamage;
 import met.freehij.kareliq.module.movement.Flight;
-import met.freehij.kareliq.module.movement.LiquidWalk;
+import met.freehij.kareliq.module.world.LiquidWalk;
 import met.freehij.kareliq.module.render.FullBright;
-import met.freehij.kareliq.module.render.ModuleList;
+import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
 import met.freehij.kareliq.utils.ReflectionHelper;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,26 +74,6 @@ public class ClientMain {
         }
     }
 
-    /*
-    roughly equivalent to:
-    this.mc.fontRenderer.drawStringWithShadow();
-
-    int i = 2;
-    net.minecraft.src.ScaledResolution scaledResolution = new net.minecraft.src.ScaledResolution (
-        this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight
-    );
-    for (met.freehij.kareliq.module.Module module : met.freehij.kareliq.ClientMain.modules) {
-        if (module.isToggled()) {
-            this.mc.fontRenderer.drawStringWithShadow(
-                module.getName(),
-                scaledResolution.getScaledWidth() - this.mc.fontRenderer.getStringWidth(module.getName()),
-                i, Integer.MAX_VALUE
-            );
-            i += 10;
-        }
-    }
-    */
-    
     public static void ClickGUI_initGui(Object dis) {
     	//initGui
     	int x = 2;
@@ -130,12 +109,11 @@ public class ClientMain {
     			String s = module.getName();
     			int swid = ReflectionHelper.FontRenderer_getStringWidth(s);
     			int x = ReflectionHelper.ScaledResolution_getScaledWidth(scaledResolution) - swid;
-    			ReflectionHelper.FontRenderer_drawString(s, x, i, Integer.MAX_VALUE); //used same method in bytecode as drawString, but the roughly equivalent to shows drawStringWithShadow?
+                ReflectionHelper.FontRenderer_drawString(s, x, i, module.getCategory().getColor());
     			i += 10;
     		}
     	}
     }
-
     public static Module getModuleByName(String name) {
         for (Module module : modules) {
             if (module.getName().equalsIgnoreCase(name)) return module;

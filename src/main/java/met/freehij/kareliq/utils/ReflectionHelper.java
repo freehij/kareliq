@@ -7,11 +7,10 @@ import java.util.Arrays;
 
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.injection.InjectionMain;
-import met.freehij.kareliq.module.misc.FastBreak;
+import met.freehij.kareliq.module.world.FastBreak;
 import met.freehij.kareliq.utils.mappings.FieldMappings;
 import met.freehij.kareliq.utils.mappings.MethodMappings;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

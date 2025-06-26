@@ -89,4 +89,8 @@ public class ClassMappings {
             new MappingUtils.ClassEntry("net/minecraft/src/AxisAlignedBB", MappingUtils.MappingType.MCP),
             new MappingUtils.ClassEntry("eo", MappingUtils.MappingType.MOJANG)
     };
+    public static final MappingUtils.ClassEntry[] PACKET_10 = new MappingUtils.ClassEntry[] {
+            new MappingUtils.ClassEntry("net/minecraft/src/Packet10Flying", MappingUtils.MappingType.MCP),
+            new MappingUtils.ClassEntry("id", MappingUtils.MappingType.MOJANG)
+    };
 }

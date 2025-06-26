@@ -1,4 +1,4 @@
-package met.freehij.kareliq.module.misc;
+package met.freehij.kareliq.module.client;
 
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.utils.ReflectionHelper;
@@ -8,7 +8,7 @@ public class ClickGui extends Module {
     public static final ClickGui INSTANCE = new ClickGui();
 
     protected ClickGui() {
-        super("ClickGui", Keyboard.KEY_RSHIFT);
+        super("ClickGui", Keyboard.KEY_RSHIFT, Category.CLIENT);
     }
     
     @Override

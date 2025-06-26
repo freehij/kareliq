@@ -9,7 +9,7 @@ public class FullBright extends Module {
     public static final FullBright INSTANCE = new FullBright();
 
     protected FullBright() {
-        super("FullBright", Keyboard.KEY_NONE);
+        super("FullBright", Keyboard.KEY_NONE, Category.RENDER);
     }
 
     @Override

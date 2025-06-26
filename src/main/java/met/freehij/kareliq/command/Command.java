@@ -1,7 +1,5 @@
 package met.freehij.kareliq.command;
 
-import met.freehij.kareliq.ClientMain;
-
 public abstract class Command {
     private final String name;
     private final String usage;

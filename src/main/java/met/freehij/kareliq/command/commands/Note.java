@@ -11,7 +11,7 @@ public class Note extends Command {
     @Override
     public boolean execute(String[] args) {
         if (args.length < 1) return false;
-        ClientMain.note = this.argsToString(args);
+        ClientMain.note = this.argsToString(args).replace("&", "§");
         return true;
     }
 }
