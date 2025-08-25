@@ -29,7 +29,7 @@ public class MethodMappings {
         add(ClassMappings.MINECRAFT, "lineIsCommand", "(Ljava/lang/String;)Z",
                 "lineIsCommand", "b");
         add(ClassMappings.get("GuiIngame"), "addChatMessage", "(Ljava/lang/String;)V",
-                "renderGameOverlay", "a");
+                "addChatMessage", "a");
         add(ClassMappings.get("RenderGlobal"), "loadRenderers", "()V",
                 "loadRenderers", "a");
         add(ClassMappings.get("World"), "getLightBrightness", "(III)F",
@@ -66,9 +66,9 @@ public class MethodMappings {
         add(ClassMappings.get("BlockFluid"), "getCollisionBoundingBoxFromPool",
                 "(L" + ClassMappings.get("World") + ";III)L" + ClassMappings.get("AxisAlignedBB") + ";",
                 "getCollisionBoundingBoxFromPool", "d");
-        add(ClassMappings.get("AxisAlignedBB"), "getCollisionBoundingBoxFromPool",
+        add(ClassMappings.get("AxisAlignedBB"), "getBoundingBoxFromPool",
                 "(DDDDDD)L" + ClassMappings.get("AxisAlignedBB") + ";",
-                "getCollisionBoundingBoxFromPool", "b");
+                "getBoundingBoxFromPool", "b");
         add(ClassMappings.get("Entity"), "isInWater", "()Z",
                 "isInWater", "ag");
         add(ClassMappings.get("EntityPlayer"), "jump", "()V",

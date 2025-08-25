@@ -27,7 +27,7 @@ public class BlockFluidInjection {
             player.invoke("jump");
             return;
         }
-        helper.setReturnValue(InjectionHelper.getClazz("AxisAlignedBB").invoke("getCollisionBoundingBoxFromPool",
+        helper.setReturnValue(InjectionHelper.getClazz("AxisAlignedBB").invoke("getBoundingBoxFromPool",
                 (int) helper.getArg(2) + (double) helper.getSelf().getField("minX").get(),
                 (int) helper.getArg(3) + (double) helper.getSelf().getField("minY").get(),
                 (int) helper.getArg(4) + (double) helper.getSelf().getField("minZ").get(),
