@@ -12,13 +12,16 @@ repositories {
 
 dependencies {
     implementation 'org.ow2.asm:asm:9.8'
+    implementation 'org.ow2.asm:asm-commons:9.8'
+    implementation 'com.google.code.gson:gson:2.13.1'
+
     compileOnly 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 }
 
 jar {
     manifest {
         attributes(
-                'Premain-Class': 'met.freehij.kareliq.injection.InjectionMain',
+                'Premain-Class': 'met.freehij.loader.Loader',
                 'Can-Redefine-Classes': true,
                 'Can-Retransform-Classes': true
         )
@@ -26,3 +29,32 @@ jar {
 }
 
 tasks.build.dependsOn tasks.shadowJar
+
+task runClient(type: Exec) {
+    group = "application"
+    dependsOn shadowJar
+    workingDir = file('run')
+
+    doFirst {
+        def jarPath = shadowJar.archiveFile.get().asFile.absolutePath
+        def os = System.getProperty("os.name").toLowerCase()
+
+        def libs = os.contains("win") ?
+                'bin\\lib\\*;bin\\minecraft.jar' :
+                'bin/lib/*:bin/minecraft.jar'
+
+        commandLine = [
+                'java',
+                '-Dhttp.proxyHost=betacraft.uk',
+                '-Djava.library.path=' + (os.contains("win") ? 'bin\\lib\\natives' : 'bin/lib/natives'),
+                '-Duser.home=' + workingDir.absolutePath,
+                "-javaagent:$jarPath",
+                '-cp', libs,
+                'net.minecraft.client.Minecraft',
+                'Player'
+        ]
+
+        println "Working directory: ${workingDir.absolutePath}"
+        println "Launching with command: ${commandLine.join(' ')}"
+    }
+}

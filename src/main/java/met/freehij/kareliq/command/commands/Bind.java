@@ -3,7 +3,6 @@ package met.freehij.kareliq.command.commands;
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.module.Module;
-import met.freehij.kareliq.utils.ReflectionHelper;
 import org.lwjgl.input.Keyboard;
 
 public class Bind extends Command {
@@ -21,13 +20,13 @@ public class Bind extends Command {
             int key = Keyboard.getKeyIndex(args[1].toUpperCase());
             if (key != 0) {
                 module.setKeyBind(key);
-                ReflectionHelper.addChatMessage(module.getName() + " is now bound to " + args[1].toUpperCase());
+                ClientMain.addChatMessage(module.getName() + " is now bound to " + args[1].toUpperCase());
                 return true;
             }
-            ReflectionHelper.addChatMessage("Unknown key: " + args[1]);
+            ClientMain.addChatMessage("Unknown key: " + args[1]);
             return true;
         }
-        ReflectionHelper.addChatMessage("Unknown module: " + args[0]);
+        ClientMain.addChatMessage("Unknown module: " + args[0]);
         return true;
     }
 }

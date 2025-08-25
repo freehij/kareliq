@@ -1,5 +1,7 @@
 package met.freehij.kareliq.command;
 
+import met.freehij.loader.util.InjectionHelper;
+
 public abstract class Command {
     private final String name;
     private final String usage;

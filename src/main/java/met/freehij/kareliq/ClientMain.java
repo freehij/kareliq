@@ -1,34 +1,41 @@
 package met.freehij.kareliq;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.command.commands.*;
+import met.freehij.kareliq.injection.BlockInjection;
+import met.freehij.kareliq.injection.GuiIngameInjection;
 import met.freehij.kareliq.module.Module;
+import met.freehij.kareliq.module.client.TabGui;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
-import met.freehij.kareliq.module.client.ClickGui;
 import met.freehij.kareliq.module.world.FastBreak;
 import met.freehij.kareliq.module.movement.GuiWalk;
 import met.freehij.kareliq.module.player.NoFallDamage;
 import met.freehij.kareliq.module.movement.Flight;
-import met.freehij.kareliq.module.world.LiquidWalk;
-import met.freehij.kareliq.module.render.FullBright;
+import met.freehij.kareliq.module.world.WaterWalking;
+import met.freehij.kareliq.module.render.Brightness;
 import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
-import met.freehij.kareliq.utils.ReflectionHelper;
+import met.freehij.loader.util.InjectionHelper;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ClientMain {
     public static boolean loaded = false;
     public static String name = "kareliq";
     public static String version = "1.0dev";
     public static String note = "This is note. You can remove it with ;unnote and set with ;note";
-    public static String configFile = "kareliq/config.liza";
+    public static final String configDir = "kareliq/configurations/";
+    public static String configName = "default";
 
     public static Module[] modules;
     public static Command[] commands;
@@ -37,13 +44,13 @@ public class ClientMain {
         modules = new Module[] {
                 NoFallDamage.INSTANCE,
                 NoKnockBack.INSTANCE,
+                WaterWalking.INSTANCE,
+                Brightness.INSTANCE,
                 FastBreak.INSTANCE,
                 ModuleList.INSTANCE,
                 OreViewer.INSTANCE,
-                FullBright.INSTANCE,
-                LiquidWalk.INSTANCE,
-                ClickGui.INSTANCE,
                 GuiWalk.INSTANCE,
+                TabGui.INSTANCE,
                 Flight.INSTANCE,
                 Aura.INSTANCE
         };
@@ -52,68 +59,30 @@ public class ClientMain {
                 new Help(),
                 new ClientName(),
                 new Note(),
-                new UnNote()
+                new UnNote(),
+                new SettingCommand(),
+                new Config(),
         };
-        loadConfig();
+        loadJsonConfig();
         loaded = true;
         new Thread(() -> {
             while (loaded) {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ignored) {}
-                saveConfig();
+                saveJsonConfig();
             }
         }).start();
     }
     
-    public static void handleKeypress(int key, boolean pressed) {
-    	if (pressed) {
-            for (Module module : ClientMain.modules) {
-                if (module.getKeyBind() == key) module.toggle();
-            }
+    public static void handleKeypress(int key) {
+        if(key == Keyboard.KEY_NONE) return;
+        for (Module module : ClientMain.modules) {
+            if (module.getKeyBind() == key) module.toggle();
         }
+        GuiIngameInjection.handleKeyPress(key);
     }
 
-    public static void ClickGUI_initGui(Object dis) {
-    	//initGui
-    	int x = 2;
-    	int y = 20;
-    	int wid = 80;
-    	int hei = 20;
-    	ArrayList controls = ReflectionHelper.GuiScreen_controlList(dis);
-    	
-    	for(int i = 0; i < modules.length; ++i) {
-    		Object button = ReflectionHelper.createButton(i, x, y, wid, hei, modules[i].getName());
-    		controls.add(button);
-    		y += 24;
-    	}
-    }
-    
-    public static void ClickGUI_actionPerformed(Object dis, Object butt) {
-    	int id = ReflectionHelper.GuiButton_id(butt);
-    	modules[id].toggle();
-    }
-    
-    public static void ClickGUI_drawScreen(Object dis, int x, int y, float f) {
-    	ReflectionHelper.FontRenderer_drawString("hi ur currently in gui ^-^", 2, 2, 0xff0000);
-    	ReflectionHelper.FontRenderer_drawString("we hav the follwoin modules:", 2, 12, 0xff0000);
-    }
-    
-    public static void renderGuiIngame(Object guiIngame, Object scaledResolution) {
-    	ReflectionHelper.FontRenderer_drawString("§6" + name + " §f" + version, 2, 2, Integer.MAX_VALUE);
-        ReflectionHelper.FontRenderer_drawString(note, 2, 12, Integer.MAX_VALUE);
-        if (!ModuleList.INSTANCE.isToggled()) return;
-    	int i = 2;
-    	for (Module module : ClientMain.modules) {
-    		if(module.isToggled()) {
-    			String s = module.getName();
-    			int swid = ReflectionHelper.FontRenderer_getStringWidth(s);
-    			int x = ReflectionHelper.ScaledResolution_getScaledWidth(scaledResolution) - swid;
-                ReflectionHelper.FontRenderer_drawString(s, x, i, module.getCategory().getColor());
-    			i += 10;
-    		}
-    	}
-    }
     public static Module getModuleByName(String name) {
         for (Module module : modules) {
             if (module.getName().equalsIgnoreCase(name)) return module;
@@ -130,25 +99,45 @@ public class ClientMain {
             if (cmd.getName().equals(command)) {
                 String[] args = new String[split.length - 1];
                 System.arraycopy(split, 1, args, 0, split.length - 1);
-                if (!cmd.execute(args)) ReflectionHelper.addChatMessage("Usage: " + cmd.getUsage());
+                if (!cmd.execute(args)) { addChatMessage("Usage: " + cmd.getUsage()); return true; }
                 return true;
             }
         }
-        ReflectionHelper.addChatMessage("Unknown command: " + command);
+        addChatMessage("Unknown command: " + command);
         return true;
     }
 
-    public static void saveConfig() { //TODO: better config format
-        String finalText = name.replace(":", ";") + ":" + version + ":" + note.replace(":", ";") + "\n";
+    public static void saveJsonConfig() {
+        JsonObject config = new JsonObject();
+        config.addProperty("name", name);
+        config.addProperty("note", note);
+        JsonObject modules1 = new JsonObject();
         for (Module module : modules) {
-            finalText += module.getName() + ":" + module.isToggled() + ":" + module.getKeyBind() + "\n";
+            JsonObject moduleJson = new JsonObject();
+            moduleJson.addProperty("toggled", module.isToggled());
+            moduleJson.addProperty("keyBind", Keyboard.getKeyName(module.getKeyBind()));
+
+            JsonObject settings = new JsonObject();
+            for (met.freehij.kareliq.module.Setting setting : module.getSettings()) {
+                if (setting.getValue() instanceof Boolean) {
+                    settings.addProperty(setting.getName(), (Boolean) setting.getValue());
+                } else if (setting.getValue() instanceof Integer) {
+                    settings.addProperty(setting.getName(), (Integer) setting.getValue());
+                } else if (setting.getValue() instanceof Double) {
+                    settings.addProperty(setting.getName(), (Double) setting.getValue());
+                }
+            }
+            moduleJson.add("settings", settings);
+
+            modules1.add(module.getName(), moduleJson);
         }
+        config.add("modules", modules1);
         try {
-            Path configPath = Paths.get(configFile);
+            Path configPath = Paths.get(configDir + configName.toLowerCase() + ".json");
             Files.createDirectories(configPath.getParent());
             Files.write(
                     configPath,
-                    finalText.getBytes(),
+                    config.toString().getBytes(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE
@@ -159,25 +148,43 @@ public class ClientMain {
         }
     }
 
-    public static void loadConfig() { //TODO: better config format
+    public static void loadJsonConfig() {
         try {
-            String[] content = new String(Files.readAllBytes(Paths.get(configFile))).split("\n");
-            String[] textVariables = content[0].split(":");
-            name = textVariables[0];
-            note = textVariables[2];
-            String[] moduleInfo = new String[content.length - 1];
-            System.arraycopy(content, 1, moduleInfo, 0, content.length - 1);
-            for (String info : moduleInfo) {
-                String[] split = info.split(":");
-                Module module = getModuleByName(split[0]);
+            JsonObject config = JsonParser.parseString(new String(Files.readAllBytes(
+                    Paths.get(configDir + configName.toLowerCase() + ".json")))).getAsJsonObject();
+            name = config.get("name").getAsString();
+            note = config.get("note").getAsString();
+            JsonObject modules = config.getAsJsonObject("modules");
+            Iterator<String> keys = modules.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                Module module = getModuleByName(key);
                 if (module == null) continue;
-                if (Boolean.parseBoolean(split[1])) module.toggle();
-                module.setKeyBind(Integer.parseInt(split[2]));
+                JsonObject moduleJson = modules.getAsJsonObject(key);
+                if (moduleJson.get("toggled").getAsBoolean() && !module.isToggled()) {
+                    module.toggle();
+                }
+                module.setKeyBind(Keyboard.getKeyIndex(moduleJson.get("keyBind").getAsString()));
+                for (met.freehij.kareliq.module.Setting setting : module.getSettings()) {
+                    JsonElement value = moduleJson.getAsJsonObject("settings").get(setting.getName());
+                    if (value == null) continue;
+                    if (setting.getValue() instanceof Boolean) {
+                        setting.setValue(value.getAsBoolean());
+                    } else if (setting.getValue() instanceof Integer) {
+                        setting.setValue(value.getAsInt());
+                    } else if (setting.getValue() instanceof Double) {
+                        setting.setValue(value.getAsDouble());
+                    }
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
             System.out.println("Could not load config! Saving current configuration...");
-            saveConfig();
+            saveJsonConfig();
         }
+    }
+
+    public static void addChatMessage(String message) {
+        InjectionHelper.getMinecraft().getField("ingameGUI").invoke("addChatMessage", message);
     }
 }
