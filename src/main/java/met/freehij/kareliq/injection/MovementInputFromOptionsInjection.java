@@ -19,28 +19,29 @@ public class MovementInputFromOptionsInjection {
 
     @Inject(method = "updatePlayerMoveState", at = At.HEAD)
     public static void updatePlayerMoveState1(InjectionHelper helper) {
-        if (!GuiWalk.INSTANCE.isToggled()) return;
-        boolean disableWalk = false;
-        try {
-            Class<?> currentScreen = InjectionHelper.getMinecraft().getField("currentScreen").getActualClass();
-            Class<?> guiChatClass = InjectionHelper.getClazz("GuiChat").getActualClass();
-            Class<?> guiControlsClass = InjectionHelper.getClazz("GuiControls").getActualClass();
-            if (currentScreen.equals(guiChatClass) ||
-                    currentScreen.equals(guiControlsClass)) {
-                disableWalk = true;
-            }
-        } catch (Exception ignored) {
-        }
         boolean[] movementKeyStates = (boolean[]) helper.getSelf().getField("movementKeyStates").get();
-        Object[] keyBindings = (Object[]) helper.getSelf().getField("gameSettings").getField("keyBindings").get();
-        for (int i = 0; i < movementKeyStates.length; i++) {
-            Reflector keyBinding = new Reflector(keyBindings[i].getClass(), keyBindings[i]);
-            movementKeyStates[i] = !disableWalk && Keyboard.isKeyDown((int) keyBinding.getField("keyCode").get());
+        if (GuiWalk.INSTANCE.isToggled()) {
+            boolean disableWalk = false;
+            try {
+                Class<?> currentScreen = InjectionHelper.getMinecraft().getField("currentScreen").getActualClass();
+                Class<?> guiChatClass = InjectionHelper.getClazz("GuiChat").getActualClass();
+                Class<?> guiControlsClass = InjectionHelper.getClazz("GuiControls").getActualClass();
+                if (currentScreen.equals(guiChatClass) ||
+                        currentScreen.equals(guiControlsClass)) {
+                    disableWalk = true;
+                }
+            } catch (Exception ignored) {
+            }
+            Object[] keyBindings = (Object[]) helper.getSelf().getField("gameSettings").getField("keyBindings").get();
+            for (int i = 0; i < movementKeyStates.length; i++) {
+                Reflector keyBinding = new Reflector(keyBindings[i].getClass(), keyBindings[i]);
+                movementKeyStates[i] = !disableWalk && Keyboard.isKeyDown((int) keyBinding.getField("keyCode").get());
+            }
+            boolean left = movementKeyStates[1];
+            boolean back = movementKeyStates[2];
+            movementKeyStates[1] = back;
+            movementKeyStates[2] = left;
         }
-        boolean left = movementKeyStates[1];
-        boolean back = movementKeyStates[2];
-        movementKeyStates[1] = back;
-        movementKeyStates[2] = left;
         if (Flight.INSTANCE.isToggled()) {
             Reflector player = InjectionHelper.getMinecraft().getField("thePlayer");
             player.setField("onGround", true);
