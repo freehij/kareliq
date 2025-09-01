@@ -2,6 +2,7 @@ package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.module.*;
+import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.client.TabGui;
 import met.freehij.loader.annotation.Inject;
