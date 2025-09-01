@@ -7,13 +7,18 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 // if it works dont touch it.
 // - me
 public class Reflector {
+    private final HashMap<String, Reflector> fieldCaches = new HashMap<String, Reflector>();
+    private final HashMap<String, Reflector> methodCaches = new HashMap<String, Reflector>();
+    private final HashMap<String, Reflector> classCaches = new HashMap<String, Reflector>();
+    
     private final Class<?> clazz;
-    private final Object object;
+    private Object object;
 
     public Reflector(Class<?> clazz, Object object) {
         this.clazz = clazz;
@@ -139,9 +144,9 @@ public class Reflector {
             throw new RuntimeException(exception);
         }
     }
-
-    private Field findField(Class<?> searchClass, String name) {
-        Class<?> current = searchClass;
+    
+    private static Field findFieldInternal(Class<?> searchClass, String name) {
+    	Class<?> current = searchClass;
         while (current != null) {
             try {
                 return current.getDeclaredField(name);
@@ -151,8 +156,8 @@ public class Reflector {
         }
         throw new NoSuchFieldError("Field not found: " + name);
     }
-
-    private Method findMethod(Class<?> searchClass, String name, Class<?>[] paramTypes) {
+    
+    private static Method findMethodInternal(Class<?> searchClass, String name, Class<?>[] paramTypes) {
         Class<?> current = searchClass;
         while (current != null) {
             try {
@@ -162,6 +167,37 @@ public class Reflector {
             }
         }
         throw new NoSuchMethodError("Method not found: " + name);
+    }
+    
+    private static final boolean ENABLE_CACHE = true;
+    
+    private static Field findField(Class<?> searchClass, String name) {
+    	ClassCache cc;
+    	if(ENABLE_CACHE) {
+    		cc = ClassCache.get(searchClass);
+    		Field f = cc.field(name);
+    		if(f != null) return f;
+    	}
+    	
+    	Field f = findFieldInternal(searchClass, name);
+    	if(ENABLE_CACHE) {
+    		cc.cache(name, f);
+    	}
+    	return f;
+    }
+    private static Method findMethod(Class<?> searchClass, String name, Class<?>[] paramTypes) {
+    	ClassCache cc;
+    	if(ENABLE_CACHE) {
+    		cc = ClassCache.get(searchClass);
+    		Method m = cc.method(name, paramTypes);
+    		if(m != null) return m;
+    	}
+    	
+    	Method m = findMethodInternal(searchClass, name, paramTypes);
+    	if(ENABLE_CACHE) {
+    		cc.cache(name, m, paramTypes);
+    	}
+    	return m;
     }
 
     public static Class<?>[] parseDescriptor(String descriptor) throws ClassNotFoundException {
