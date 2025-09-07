@@ -5,6 +5,7 @@ import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.module.*;
 import met.freehij.kareliq.util.Utils;
 import org.lwjgl.input.Keyboard;
+import met.freehij.kareliq.module.Module;
 
 public class SettingCommand extends Command {
     public SettingCommand() {

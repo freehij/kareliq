@@ -2,6 +2,7 @@ package met.freehij.kareliq.module.client;
 
 import met.freehij.kareliq.module.*;
 import org.lwjgl.input.Keyboard;
+import met.freehij.kareliq.module.Module;
 
 public class ModuleList extends Module {
     public static final ModuleList INSTANCE = new ModuleList();
