@@ -3,6 +3,7 @@ package met.freehij.kareliq.injection;
 import met.freehij.kareliq.ClientMain;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
+import met.freehij.loader.constant.At;
 import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.Reflector;
 import met.freehij.loader.util.mappings.ClassMappings;
@@ -22,7 +23,7 @@ public class MinecraftInjection {
         }
     }
 
-    @Inject(method = "runTick")
+    @Inject(method = "runTick", at = At.RETURN)
     public static void runTick(InjectionHelper helper) throws ClassNotFoundException, InstantiationException, IllegalAccessException { //todo fix t key stuck in sp
         if (helper.getSelf().getField("currentScreen").get() == null && !((boolean) helper.getSelf().invoke("isMultiplayerWorld").get())) {
             Object keyBinding = ((Object[]) helper.getSelf().getField("gameSettings").getField("keyBindings").get())[8];
