@@ -7,10 +7,7 @@ import met.freehij.loader.constant.At;
 import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.Reflector;
 import met.freehij.loader.util.mappings.ClassMappings;
-import met.freehij.loader.util.mappings.MethodMappings;
 import org.lwjgl.input.Keyboard;
-
-import java.util.Arrays;
 
 @Injection(ClassMappings.MINECRAFT)
 public class MinecraftInjection {
@@ -24,12 +21,17 @@ public class MinecraftInjection {
     }
 
     @Inject(method = "runTick", at = At.RETURN)
-    public static void runTick(InjectionHelper helper) throws ClassNotFoundException, InstantiationException, IllegalAccessException { //todo fix t key stuck in sp
+    public static void runTick(InjectionHelper helper) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         if (helper.getSelf().getField("currentScreen").get() == null && !((boolean) helper.getSelf().invoke("isMultiplayerWorld").get())) {
             Object keyBinding = ((Object[]) helper.getSelf().getField("gameSettings").getField("keyBindings").get())[8];
             if (Keyboard.isKeyDown((int) new Reflector(keyBinding.getClass(), keyBinding).getField("keyCode").get())) {
                 helper.getSelf().invoke("displayGuiScreen", InjectionHelper.getClazz("GuiChat").getActualClass().newInstance());
             }
         }
+    }
+
+    @Inject(method = "startGame", at = At.RETURN)
+    public static void startGame(InjectionHelper helper) {
+        ClientMain.loadBackgroundPath();
     }
 }

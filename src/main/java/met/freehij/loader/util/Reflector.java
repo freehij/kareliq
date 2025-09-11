@@ -29,6 +29,42 @@ public class Reflector {
         return object;
     }
 
+    public int getInt() {
+        return (int) object;
+    }
+
+    public long getLong() {
+        return (long) object;
+    }
+
+    public float getFloat() {
+        return (float) object;
+    }
+
+    public double getDouble() {
+        return (double) object;
+    }
+
+    public byte getByte() {
+        return (byte) object;
+    }
+
+    public char getChar() {
+        return (char) object;
+    }
+
+    public short getShort() {
+        return (short) object;
+    }
+
+    public boolean getBoolean() {
+        return (boolean) object;
+    }
+
+    public String getString() {
+        return (String) object;
+    }
+
     public Class<?> getActualClass() {
         return clazz;
     }

@@ -66,6 +66,12 @@ public class ClassMappings {
                 "net/minecraft/src/Packet28EntityVelocity", "gh");
         add("PlayerControllerMP",
                 "net/minecraft/src/PlayerControllerMP", "xb");
+        add("GuiTextField",
+                "net/minecraft/src/GuiTextField", "rj");
+        add("GuiMainMenu",
+                "net/minecraft/src/GuiMainMenu", "fs");
+        add("GuiButton",
+                "net/minecraft/src/GuiButton", "ka");
     }
 
     private static void add(String reference, String... entries) {

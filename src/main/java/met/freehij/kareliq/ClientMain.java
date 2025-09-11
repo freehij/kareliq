@@ -19,6 +19,7 @@ import met.freehij.kareliq.module.world.WaterWalking;
 import met.freehij.kareliq.module.render.Brightness;
 import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
+import met.freehij.kareliq.util.BackgroundUtils;
 import met.freehij.loader.util.InjectionHelper;
 import org.lwjgl.input.Keyboard;
 
@@ -73,8 +74,9 @@ public class ClientMain {
                 saveJsonConfig();
             }
         }).start();
+        BackgroundUtils.generateClass();
     }
-    
+
     public static void handleKeypress(int key) {
         if(key == Keyboard.KEY_NONE) return;
         for (Module module : ClientMain.modules) {
@@ -105,6 +107,12 @@ public class ClientMain {
         }
         addChatMessage("Unknown command: " + command);
         return true;
+    }
+
+    public static void saveBackgroundPath() {
+        try {
+            Files.write(Paths.get(configDir + "backgroundPath.txt"), BackgroundUtils.fileName.getBytes());
+        } catch (Exception ignored) {}
     }
 
     public static void saveJsonConfig() {
@@ -146,6 +154,15 @@ public class ClientMain {
             System.out.println("Could not save config!");
             e.printStackTrace();
         }
+    }
+
+    public static void loadBackgroundPath() {
+        try {
+            BackgroundUtils.fileName = Files.readAllLines(Paths.get(configDir + "backgroundPath.txt")).get(0);
+            if (!BackgroundUtils.loadTexture()) {
+                BackgroundUtils.fileName = "/gui/background.png";
+            }
+        } catch (Exception ignored) {}
     }
 
     public static void loadJsonConfig() {

@@ -75,6 +75,50 @@ public class MethodMappings {
                 "jump", "R");
         add(ClassMappings.get("PlayerControllerMP"), "clickBlock", "(IIII)V",
                 "clickBlock", "a");
+        add(ClassMappings.get("GuiTextField"), "textboxKeyTyped", "(CI)V",
+                "textboxKeyTyped", "a");
+        add(ClassMappings.get("GuiScreen"), "getClipboardString", "()Ljava/lang/String;",
+                "getClipboardString", "d");
+        add(ClassMappings.get("GuiScreen"), "initGui", "()V",
+                "initGui", "b");
+        add(ClassMappings.get("GuiMainMenu"), "initGui", "()V",
+                "initGui", "b");
+        add(ClassMappings.get("GuiScreen"), "actionPerformed", "(L" + ClassMappings.get("GuiButton") +";)V",
+                "actionPerformed", "a");
+        add(ClassMappings.get("GuiMainMenu"), "actionPerformed", "(L" + ClassMappings.get("GuiButton") +";)V",
+                "actionPerformed", "a");
+        add(ClassMappings.get("GuiScreen"), "onGuiClosed", "()V",
+                "onGuiClosed", "h");
+        add(ClassMappings.get("GuiScreen"), "drawScreen", "(IIF)V",
+                "drawScreen", "a");
+        add(ClassMappings.get("GuiScreen"), "drawDefaultBackground", "()V",
+                "drawDefaultBackground", "i");
+        add(ClassMappings.get("GuiTextField"), "drawTextBox", "()V",
+                "drawTextBox", "c");
+        add(ClassMappings.get("GuiButton"), "drawButton", "(L" + ClassMappings.MINECRAFT + ";II)V",
+                "drawButton", "a");
+        add(ClassMappings.get("GuiScreen"), "mouseClicked", "(III)V",
+                "mouseClicked", "a");
+        add(ClassMappings.get("GuiScreen"), "keyTyped", "(CI)V",
+                "keyTyped", "a");
+        add(ClassMappings.get("GuiTextField"), "textboxKeyTyped", "(CI)V",
+                "textboxKeyTyped", "a");
+        add(ClassMappings.get("GuiTextField"), "mouseClicked", "(III)V",
+                "mouseClicked", "a");
+        add(ClassMappings.get("GuiTextField"), "setMaxStringLength", "(I)V",
+                "setMaxStringLength", "a");
+        add(ClassMappings.get("GuiTextField"), "setText", "(Ljava/lang/String;)V",
+                "setText", "a");
+        add(ClassMappings.get("GuiTextField"), "getText", "()Ljava/lang/String;",
+                "getText", "a");
+        add(ClassMappings.get("GuiScreen"), "drawBackground", "(I)V",
+                "drawBackground", "b");
+        add(ClassMappings.MINECRAFT, "startGame", "()V",
+                "startGame", "a");
+        add(ClassMappings.get("GuiScreen"), "updateScreen", "()V",
+                "updateScreen", "a");
+        add(ClassMappings.get("GuiTextField"), "updateCursorCounter", "()V",
+                "updateCursorCounter", "b");
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {

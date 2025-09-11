@@ -31,9 +31,14 @@ public class ClassBuilder {
         return this;
     }
 
-    public Class<?> build() throws Exception {
-        byte[] bytecode = generateClassBytes();
-        return defineClass(className.replace('/', '.'), bytecode, targetClassLoader);
+    public Class<?> build() {
+        try {
+            byte[] bytecode = generateClassBytes();
+            return defineClass(className.replace('/', '.'), bytecode, targetClassLoader);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private byte[] generateClassBytes() {

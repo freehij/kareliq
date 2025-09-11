@@ -69,6 +69,22 @@ public class FieldMappings {
                 "maxZ", "bx");
         add(ClassMappings.get("PlayerControllerMP"), "curBlockDamageMP", "F",
                 "curBlockDamageMP", "f");
+        add(ClassMappings.get("GuiTextField"), "isEnabled", "Z",
+                "isEnabled", "b");
+        add(ClassMappings.get("GuiTextField"), "isFocused", "Z",
+                "isFocused", "a");
+        add(ClassMappings.get("GuiTextField"), "text", "Ljava/lang/String;",
+                "text", "h");
+        add(ClassMappings.get("GuiTextField"), "maxStringLength", "I",
+                "maxStringLength", "i");
+        add(ClassMappings.get("GuiScreen"), "height", "I",
+                "height", "d");
+        add(ClassMappings.get("GuiScreen"), "width", "I",
+                "width", "c");
+        add(ClassMappings.get("GuiScreen"), "controlList", "Ljava/util/List;",
+                "controlList", "e");
+        add(ClassMappings.get("GuiButton"), "id", "I",
+                "id", "f");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {
