@@ -4,7 +4,6 @@ import met.freehij.kareliq.ClientMain;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
 import met.freehij.loader.constant.At;
-import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.mappings.ClassMappings;
 import met.freehij.loader.util.mappings.FieldMappings;
 import met.freehij.loader.util.mappings.MethodMappings;

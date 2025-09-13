@@ -10,3 +10,10 @@ To use this client on b1.7.3 you need to use [this](https://www.mediafire.com/fi
 1. Open your instance settings and find `Java arguments`
 2. Add `-javaagent:path/to/your/jar` to the field
 3. Save settings and launch instance as normal
+
+# TODO
+- [ ] Injection to methods that are not overriden by child class.
+- [ ] Replace reflection with MethodHandles where it's possible.
+
+
+- [ ] Custom buttons for all button types (small button, slider, etc.)

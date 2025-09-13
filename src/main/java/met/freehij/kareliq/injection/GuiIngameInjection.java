@@ -73,14 +73,14 @@ public class GuiIngameInjection {
                 listeningKeySlider = null;
             } else if (keyCode == Keyboard.KEY_LEFT) {
                 double value = (double)listeningKeySlider.getValue();
-                value = value - (value - listeningKeySlider.getStep() >= listeningKeySlider.getMin() ? listeningKeySlider.getStep() : 0);
+                value = value - (value - listeningKeySlider.getStep() >= listeningKeySlider.getMin() ? listeningKeySlider.getStep() : 0.D);
                 if (value < listeningKeySlider.getMin()) value = listeningKeySlider.getMin();
                 listeningKeySlider.setValue(value);
                 Module.Category.values()[selectedCategory].getModules()[selectedModule].onSettingChange(listeningKeySlider);
                 return;
             } else if (keyCode == Keyboard.KEY_RIGHT) {
                 double value = (double)listeningKeySlider.getValue();
-                value = value + (value + listeningKeySlider.getStep() <= listeningKeySlider.getMax() ? listeningKeySlider.getStep() : 0);
+                value = value + (value + listeningKeySlider.getStep() <= listeningKeySlider.getMax() ? listeningKeySlider.getStep() : 0.D);
                 if (value > listeningKeySlider.getMax()) value = listeningKeySlider.getMax();
                 listeningKeySlider.setValue(value);
                 Module.Category.values()[selectedCategory].getModules()[selectedModule].onSettingChange(listeningKeySlider);

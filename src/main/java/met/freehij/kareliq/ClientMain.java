@@ -6,11 +6,13 @@ import com.google.gson.JsonParser;
 import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.command.commands.*;
 import met.freehij.kareliq.injection.BlockInjection;
+import met.freehij.kareliq.injection.GuiButtonInjection;
 import met.freehij.kareliq.injection.GuiIngameInjection;
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.client.TabGui;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
+import met.freehij.kareliq.module.movement.Step;
 import met.freehij.kareliq.module.world.FastBreak;
 import met.freehij.kareliq.module.movement.GuiWalk;
 import met.freehij.kareliq.module.player.NoFallDamage;
@@ -29,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
+import java.util.List;
 
 public class ClientMain {
     public static boolean loaded = false;
@@ -53,7 +56,8 @@ public class ClientMain {
                 GuiWalk.INSTANCE,
                 TabGui.INSTANCE,
                 Flight.INSTANCE,
-                Aura.INSTANCE
+                Aura.INSTANCE,
+                Step.INSTANCE
         };
         commands = new Command[] {
                 new Bind(),
@@ -111,7 +115,8 @@ public class ClientMain {
 
     public static void saveBackgroundPath() {
         try {
-            Files.write(Paths.get(configDir + "backgroundPath.txt"), BackgroundUtils.fileName.getBytes());
+            Files.write(Paths.get(configDir + "backgroundPath.txt"), (BackgroundUtils.fileName + "\n"
+                    + GuiButtonInjection.buttonMode).getBytes());
         } catch (Exception ignored) {}
     }
 
@@ -158,11 +163,14 @@ public class ClientMain {
 
     public static void loadBackgroundPath() {
         try {
-            BackgroundUtils.fileName = Files.readAllLines(Paths.get(configDir + "backgroundPath.txt")).get(0);
+            List<String> a = Files.readAllLines(Paths.get(configDir + "backgroundPath.txt"));
+            BackgroundUtils.fileName = a.get(0);
+            GuiButtonInjection.buttonMode = Byte.parseByte(a.get(1));
             if (!BackgroundUtils.loadTexture()) {
                 BackgroundUtils.fileName = "/gui/background.png";
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public static void loadJsonConfig() {

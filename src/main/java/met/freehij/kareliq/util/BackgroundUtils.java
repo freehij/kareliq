@@ -1,6 +1,7 @@
 package met.freehij.kareliq.util;
 
 import met.freehij.kareliq.ClientMain;
+import met.freehij.kareliq.injection.GuiButtonInjection;
 import met.freehij.loader.util.ClassBuilder;
 import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.Reflector;
@@ -57,6 +58,8 @@ public class BackgroundUtils {
                height / 4 + 132, 98, 20, "Default").get());
         controlList.add(InjectionHelper.getClazz("GuiButton").newInstance("IIIIILjava/lang/String;", 2, width / 2 + 2,
                 height / 4 + 132, 98, 20, "Apply").get());
+        controlList.add(InjectionHelper.getClazz("GuiButton").newInstance("IIIIILjava/lang/String;", 3, width - 152,
+                height - 22, 150, 20, "Button style: " + buttonMode()).get());
         backgroundPath = InjectionHelper.getClazz("GuiTextField").newInstance(
                 "L" + ClassMappings.get("GuiScreen") + ";L" + ClassMappings.get("FontRenderer")
                         + ";IIIILjava/lang/String;", instance,
@@ -71,7 +74,8 @@ public class BackgroundUtils {
 
     public static void actionPerformed(Object instance, Object[] args) {
         errorMessage = null;
-        switch (new Reflector(args[0].getClass(), args[0]).getField("id").getInt()) {
+        Reflector reflector = new Reflector(args[0].getClass(), args[0]);
+        switch (reflector.getField("id").getInt()) {
             case 0:
                 InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
                 break;
@@ -88,6 +92,11 @@ public class BackgroundUtils {
                     break;
                 }
                 InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
+                break;
+            case 3:
+                ClientMain.saveBackgroundPath();
+                GuiButtonInjection.buttonMode = (byte) (GuiButtonInjection.buttonMode == 0 ? 1 : 0);
+                reflector.setField("displayString", "Button style: " + buttonMode());
                 break;
         }
     }
@@ -114,6 +123,10 @@ public class BackgroundUtils {
 
     public static void updateScreen(Object instance, Object[] args) {
         backgroundPath.invoke("updateCursorCounter");
+    }
+
+    static String buttonMode() {
+        return GuiButtonInjection.buttonMode == 0 ? "Vanilla" : "Custom";
     }
 
     public static boolean loadTexture() {

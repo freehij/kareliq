@@ -85,6 +85,18 @@ public class FieldMappings {
                 "controlList", "e");
         add(ClassMappings.get("GuiButton"), "id", "I",
                 "id", "f");
+        add(ClassMappings.get("GuiButton"), "height", "I",
+                "height", "b");
+        add(ClassMappings.get("GuiButton"), "width", "I",
+                "width", "a");
+        add(ClassMappings.get("GuiButton"), "yPosition", "I",
+                "yPosition", "d");
+        add(ClassMappings.get("GuiButton"), "xPosition", "I",
+                "xPosition", "c");
+        add(ClassMappings.get("Entity"), "stepHeight", "F",
+                "stepHeight", "bp");
+        add(ClassMappings.get("GuiButton"), "displayString", "Ljava/lang/String;",
+                "displayString", "e");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {

@@ -119,6 +119,8 @@ public class MethodMappings {
                 "updateScreen", "a");
         add(ClassMappings.get("GuiTextField"), "updateCursorCounter", "()V",
                 "updateCursorCounter", "b");
+        add(ClassMappings.get("Gui"), "drawTexturedModalRect", "(IIIIII)V",
+                "drawTexturedModalRect", "b");
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {
