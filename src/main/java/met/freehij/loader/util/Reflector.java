@@ -2,6 +2,7 @@ package met.freehij.loader.util;
 
 import met.freehij.loader.util.mappings.FieldMappings;
 import met.freehij.loader.util.mappings.MethodMappings;
+import met.freehij.loader.util.mappings.util.MethodMapping;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -154,14 +155,19 @@ public class Reflector {
     }
 
     public Reflector invoke(String methodName, Object... args) {
-        String descriptor = "";
+        Class<?>[] params = new Class<?>[0];
         Class<?> current = this.getActualClass();
 
         while (current != null) {
-            String[] mappedName = MethodMappings.get(current.getName().replace(".", "/"), methodName);
+            MethodMapping mappedName = MethodMappings.get(current.getName().replace(".", "/"), methodName);
             if (mappedName != null) {
-                methodName = mappedName[0];
-                descriptor = mappedName[1];
+                methodName = mappedName.method;
+                if (mappedName.params == null) {
+                    try {
+                        mappedName.params = parseDescriptor(mappedName.descriptor);
+                    } catch (Exception ignored) {}
+                }
+                params = mappedName.params;
                 break;
             }
             current = current.getSuperclass();
@@ -171,8 +177,7 @@ public class Reflector {
         }
 
         try {
-            Class<?>[] paramTypes = parseDescriptor(descriptor);
-            return this.invokeRaw(methodName, paramTypes, args);
+            return this.invokeRaw(methodName, params, args);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
@@ -229,7 +234,7 @@ public class Reflector {
         }
     }
 
-    private static Class<?>[] parseDescriptor(String descriptor) throws ClassNotFoundException {
+    public static Class<?>[] parseDescriptor(String descriptor) throws ClassNotFoundException { //TODO: move it somewhere else
         List<Class<?>> classes = new ArrayList<>();
         boolean isArray = false;
         for (int i = 0; i < descriptor.length(); i++) {

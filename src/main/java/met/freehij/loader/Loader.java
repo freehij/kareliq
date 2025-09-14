@@ -7,6 +7,7 @@ import met.freehij.loader.constant.At;
 import met.freehij.loader.util.mappings.ClassMappings;
 import met.freehij.loader.util.mappings.FieldMappings;
 import met.freehij.loader.util.mappings.MethodMappings;
+import met.freehij.loader.util.mappings.util.MethodMapping;
 import org.objectweb.asm.*;
 
 import java.io.*;
@@ -99,12 +100,12 @@ public class Loader {
                 Inject inject = method.getAnnotation(Inject.class);
                 if (inject == null) continue;
 
-                String[] methodInfo = MethodMappings.get(target, inject.method());
+                MethodMapping methodInfo = MethodMappings.get(target, inject.method());
                 injectionPoints.computeIfAbsent(target, k -> new ArrayList<>())
                         .add(new InjectionPoint(
                                 target,
-                                methodInfo[0],
-                                methodInfo[1],
+                                methodInfo.method,
+                                methodInfo.descriptor,
                                 inject.at(),
                                 clazz.getName().replace('.', '/'),
                                 method.getName()

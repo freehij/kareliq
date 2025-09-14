@@ -28,20 +28,20 @@ public class BackgroundUtils {
     public static void generateClass() {
         String guiScreen = ClassMappings.get("GuiScreen");
         guiEditMainMenu = new ClassBuilder(BackgroundUtils.class.getClassLoader(), guiScreen)
-                .overrideMethod(MethodMappings.get(guiScreen, "initGui")[0], "()V",
+                .overrideMethod(MethodMappings.get(guiScreen, "initGui").method, "()V",
                         "met/freehij/kareliq/util/BackgroundUtils", "initGui", false)
-                .overrideMethod(MethodMappings.get(guiScreen, "onGuiClosed")[0], "()V",
+                .overrideMethod(MethodMappings.get(guiScreen, "onGuiClosed").method, "()V",
                         "met/freehij/kareliq/util/BackgroundUtils", "onGuiClosed", false)
-                .overrideMethod(MethodMappings.get(guiScreen, "actionPerformed")[0],
+                .overrideMethod(MethodMappings.get(guiScreen, "actionPerformed").method,
                         "(L" + ClassMappings.get("GuiButton") +";)V", "met/freehij/kareliq/util/BackgroundUtils",
                         "actionPerformed", false)
-                .overrideMethod(MethodMappings.get(guiScreen, "drawScreen")[0], "(IIF)V",
+                .overrideMethod(MethodMappings.get(guiScreen, "drawScreen").method, "(IIF)V",
                         "met/freehij/kareliq/util/BackgroundUtils", "drawScreen", false)
-                .overrideMethod(MethodMappings.get(guiScreen, "mouseClicked")[0], "(III)V",
+                .overrideMethod(MethodMappings.get(guiScreen, "mouseClicked").method, "(III)V",
                         "met/freehij/kareliq/util/BackgroundUtils", "mouseClicked", true)
-                .overrideMethod(MethodMappings.get(guiScreen, "keyTyped")[0], "(CI)V",
+                .overrideMethod(MethodMappings.get(guiScreen, "keyTyped").method, "(CI)V",
                         "met/freehij/kareliq/util/BackgroundUtils", "keyTyped", true)
-                .overrideMethod(MethodMappings.get(guiScreen, "updateScreen")[0], "()V",
+                .overrideMethod(MethodMappings.get(guiScreen, "updateScreen").method, "()V",
                         "met/freehij/kareliq/util/BackgroundUtils", "updateScreen", false)
                 .build();
     }

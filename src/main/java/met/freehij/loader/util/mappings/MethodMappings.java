@@ -1,10 +1,13 @@
 package met.freehij.loader.util.mappings;
 
+import met.freehij.loader.util.Reflector;
+import met.freehij.loader.util.mappings.util.MethodMapping;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class MethodMappings {
-    private static final Map<String, String[]> methodRefmap = new HashMap<>();
+    private static final Map<String, MethodMapping> methodRefmap = new HashMap<>();
 
     public static void initRefmap() {
         add(ClassMappings.get("MovementInputFromOptions"), "checkKeyForMovementInput", "(IZ)V",
@@ -124,11 +127,11 @@ public class MethodMappings {
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {
-        methodRefmap.put(classReference + ":" + methodReference, new String[] { MappingResolver.resolveMethod(
-                classReference, descriptor, entries), descriptor });
+        methodRefmap.put(classReference + ":" + methodReference, new MethodMapping(MappingResolver.resolveMethod(
+                classReference, descriptor, entries), null, descriptor));
     }
 
-    public static String[] get(String classReference, String methodReference) {
+    public static MethodMapping get(String classReference, String methodReference) {
         return methodRefmap.get(classReference + ":" + methodReference);
     }
 }
