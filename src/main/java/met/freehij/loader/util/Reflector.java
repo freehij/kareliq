@@ -10,15 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// if it works dont touch it.
-// - me
 public class Reflector {
     private final HashMap<String, Reflector> fieldCaches = new HashMap<String, Reflector>();
     private final HashMap<String, Reflector> methodCaches = new HashMap<String, Reflector>();
     private final HashMap<String, Reflector> classCaches = new HashMap<String, Reflector>();
     
     private final Class<?> clazz;
-    private Object object;
+    private final Object object;
 
     public Reflector(Class<?> clazz, Object object) {
         this.clazz = clazz;
@@ -136,6 +134,16 @@ public class Reflector {
         }
     }
 
+    public void setFieldRaw(String name, Object value) {
+        try {
+            Field field = findField(this.getActualClass(), name);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set field: " + name, e);
+        }
+    }
+
     public Reflector invoke(String methodName, Object... args) {
         String descriptor = "";
         Class<?> current = this.getActualClass();
@@ -154,11 +162,18 @@ public class Reflector {
         }
 
         try {
-            Class<?>[] paramTypes = parseDescriptor(descriptor);
+            return this.invokeRaw(methodName, parseDescriptor(descriptor), args);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public Reflector invokeRaw(String methodName, Class<?>[] descriptor, Object... args) {
+        try {
             Method method = findMethod(
                     object != null ? object.getClass() : clazz,
                     methodName,
-                    paramTypes
+                    descriptor
             );
             method.setAccessible(true);
             Object result = method.invoke(object, args);
@@ -173,8 +188,15 @@ public class Reflector {
 
     public Reflector newInstance(String descriptor, Object... args) {
         try {
-            Class<?>[] params = parseDescriptor(descriptor);
-            Object instance = this.getActualClass().getConstructor(params).newInstance(args);
+            return this.newInstanceRaw(parseDescriptor(descriptor), args);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public Reflector newInstanceRaw(Class<?>[] descriptor, Object... args) {
+        try {
+            Object instance = this.getActualClass().getConstructor(descriptor).newInstance(args);
             return new Reflector(instance.getClass(), instance);
         } catch (Exception exception) {
             throw new RuntimeException(exception);

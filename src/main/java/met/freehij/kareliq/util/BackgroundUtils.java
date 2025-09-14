@@ -94,9 +94,9 @@ public class BackgroundUtils {
                 InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
                 break;
             case 3:
-                ClientMain.saveBackgroundPath();
                 GuiButtonInjection.buttonMode = (byte) (GuiButtonInjection.buttonMode == 0 ? 1 : 0);
                 reflector.setField("displayString", "Button style: " + buttonMode());
+                ClientMain.saveBackgroundPath();
                 break;
         }
     }

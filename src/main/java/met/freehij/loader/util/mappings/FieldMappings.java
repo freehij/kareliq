@@ -97,6 +97,8 @@ public class FieldMappings {
                 "stepHeight", "bp");
         add(ClassMappings.get("GuiButton"), "displayString", "Ljava/lang/String;",
                 "displayString", "e");
+        add(ClassMappings.get("GameSettings"), "keyBindSneak", "L" + ClassMappings.get("KeyBinding") + ";",
+                "keyBindSneak", "v");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {

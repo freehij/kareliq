@@ -6,6 +6,7 @@ import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
 import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.Reflector;
+import org.lwjgl.input.Keyboard;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -23,6 +24,12 @@ public class BlockFluidInjection {
     public static void getCollisionBoundingBoxFromPool(InjectionHelper helper) throws ClassNotFoundException {
         if (!WaterWalking.INSTANCE.isToggled()) return;
         Reflector player = InjectionHelper.getMinecraft().getField("thePlayer");
+        if (Keyboard.isKeyDown(InjectionHelper.getMinecraft()
+                .getField("gameSettings")
+                .getField("keyBindSneak")
+                .getField("keyCode").getInt())) {
+            return;
+        }
         if ((boolean) player.invoke("isInWater").get()) {
             player.invoke("jump");
             return;

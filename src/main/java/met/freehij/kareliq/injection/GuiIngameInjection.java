@@ -57,6 +57,10 @@ public class GuiIngameInjection {
         }
     }
 
+    static double round(double value) {
+        return Math.round(value * 10000000000.0) / 10000000000.0;
+    }
+
     public static void handleKeyPress(int keyCode) {
         if (!TabGui.INSTANCE.isToggled()) return;
         if (listeningKeyBind != null) {
@@ -75,14 +79,14 @@ public class GuiIngameInjection {
                 double value = (double)listeningKeySlider.getValue();
                 value = value - (value - listeningKeySlider.getStep() >= listeningKeySlider.getMin() ? listeningKeySlider.getStep() : 0.D);
                 if (value < listeningKeySlider.getMin()) value = listeningKeySlider.getMin();
-                listeningKeySlider.setValue(value);
+                listeningKeySlider.setValue(round(value));
                 Module.Category.values()[selectedCategory].getModules()[selectedModule].onSettingChange(listeningKeySlider);
                 return;
             } else if (keyCode == Keyboard.KEY_RIGHT) {
                 double value = (double)listeningKeySlider.getValue();
                 value = value + (value + listeningKeySlider.getStep() <= listeningKeySlider.getMax() ? listeningKeySlider.getStep() : 0.D);
                 if (value > listeningKeySlider.getMax()) value = listeningKeySlider.getMax();
-                listeningKeySlider.setValue(value);
+                listeningKeySlider.setValue(round(value));
                 Module.Category.values()[selectedCategory].getModules()[selectedModule].onSettingChange(listeningKeySlider);
                 return;
             }
@@ -230,7 +234,7 @@ public class GuiIngameInjection {
                                 helper.getSelf().invoke("drawRect", pos, y3, pos+1, y3 + 11,
                                         slider == listeningKeySlider ? 0xff00ff00 : 0xffffffff);
                                 drawString(fontRenderer,
-                                        String.valueOf(Math.round(slider.getDouble() * 10000000000.0) / 10000000000.0),
+                                        String.valueOf(slider.getDouble()),
                                         finalWidth2 + 12, y3 + 2, Integer.MAX_VALUE);
                             } else {
                                 String stuff = "";
