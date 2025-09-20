@@ -30,6 +30,7 @@ public class BlockFluidInjection {
                 .getField("keyCode").getInt())) {
             return;
         }
+        if (player.getField("fallDistance").getFloat() > 2.F) return;
         if ((boolean) player.invoke("isInWater").get()) {
             player.invoke("jump");
             return;

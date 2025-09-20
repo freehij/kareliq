@@ -24,6 +24,7 @@ public class Brightness extends Module {
 
     @Override
     public void onSettingChange(Setting setting) {
-        if (ClientMain.loaded) InjectionHelper.getMinecraft().getField("renderGlobal").invoke("loadRenderers");
+        if (ClientMain.loaded && this.isToggled())
+            InjectionHelper.getMinecraft().getField("renderGlobal").invoke("loadRenderers");
     }
 }
