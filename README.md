@@ -15,6 +15,7 @@ To use this client on b1.7.3 you need to use [this](https://www.mediafire.com/fi
 - [ ] Injection to methods that are not overriden by child class.
 - [ ] Replace reflection with MethodHandles where it's possible.
 - [ ] Add mappings to ClassBuilder
+- [ ] Save background image instead of loading it every time as it might get deleted
 
 
 - [ ] Custom buttons for all button types (small button, slider, etc.)
