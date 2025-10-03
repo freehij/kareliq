@@ -72,6 +72,12 @@ public class ClassMappings {
                 "net/minecraft/src/GuiMainMenu", "fs");
         add("GuiButton",
                 "net/minecraft/src/GuiButton", "ka");
+        add("RenderGlobal",
+                "net/minecraft/src/RenderGlobal", "m");
+        add("Vec3D",
+                "net/minecraft/src/Vec3D", "br");
+        add("ICamera",
+                "net/minecraft/src/ICamera", "ye");
     }
 
     private static void add(String reference, String... entries) {

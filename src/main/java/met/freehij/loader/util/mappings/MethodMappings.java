@@ -124,6 +124,9 @@ public class MethodMappings {
                 "updateCursorCounter", "b");
         add(ClassMappings.get("Gui"), "drawTexturedModalRect", "(IIIIII)V",
                 "drawTexturedModalRect", "b");
+        add(ClassMappings.get("RenderGlobal"), "renderEntities",
+                "(L" + ClassMappings.get("Vec3D") + ";L" + ClassMappings.get("ICamera") + ";F)V",
+                "renderEntities", "a");
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {
