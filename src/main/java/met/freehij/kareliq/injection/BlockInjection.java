@@ -2,6 +2,7 @@ package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.module.render.Brightness;
 import met.freehij.kareliq.module.render.OreViewer;
+import met.freehij.kareliq.module.world.NoClip;
 import met.freehij.kareliq.util.Utils;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
@@ -31,6 +32,14 @@ public class BlockInjection {
             } else {
                 helper.setReturnValue(false);
             }
+            helper.setCancelled(true);
+        }
+    }
+
+    @Inject(method = "getCollisionBoundingBoxFromPool")
+    public static void getCollisionBoundingBoxFromPool(InjectionHelper helper) {
+        if (NoClip.INSTANCE.isToggled()) {
+            helper.setReturnValue(null);
             helper.setCancelled(true);
         }
     }

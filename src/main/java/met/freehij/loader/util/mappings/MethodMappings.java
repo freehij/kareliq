@@ -129,6 +129,21 @@ public class MethodMappings {
                 "renderEntities", "a");
         add(ClassMappings.get("ScaledResolution"), "getScaledHeight", "()I",
                 "getScaledHeight", "b");
+        add(ClassMappings.get("Block"), "getCollisionBoundingBoxFromPool",
+                "(L" + ClassMappings.get("World") + ";III)L" + ClassMappings.get("AxisAlignedBB") + ";",
+                "getCollisionBoundingBoxFromPool", "d");
+        add(ClassMappings.get("Entity"), "isEntityInsideOpaqueBlock", "()Z",
+                "isEntityInsideOpaqueBlock", "L");
+        add(ClassMappings.get("EntityPlayerSP"), "pushOutOfBlocks", "(DDD)Z",
+                "func_28014_c", "pushOutOfBlocks", "c");
+        add(ClassMappings.get("Entity"), "handleWaterMovement", "()Z",
+                "handleWaterMovement", "j_");
+        add(ClassMappings.get("EntityClientPlayerMP"), "onUpdateMP", "()V",
+                "func_4056_N", "am");
+        add(ClassMappings.get("Entity"), "setPosition", "(DDD)V",
+                "setPosition", "d");
+        add(ClassMappings.get("Entity"), "applyEntityCollision", "(L" + ClassMappings.get("Entity") + ";)V",
+                "applyEntityCollision", "h");
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {

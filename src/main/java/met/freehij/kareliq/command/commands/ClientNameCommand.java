@@ -3,15 +3,15 @@ package met.freehij.kareliq.command.commands;
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.command.Command;
 
-public class Note extends Command {
-    public Note() {
-        super("note", "<note(;unnote to remove)>");
+public class ClientNameCommand extends Command {
+    public ClientNameCommand() {
+        super("clientname", "<client name(use & to color)>");
     }
 
     @Override
     public boolean execute(String[] args) {
         if (args.length < 1) return false;
-        ClientMain.note = this.argsToString(args).replace("&", "§");
+        ClientMain.name = this.argsToString(args).replace("&", "§");
         return true;
     }
 }

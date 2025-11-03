@@ -5,8 +5,8 @@ import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.module.Module;
 import org.lwjgl.input.Keyboard;
 
-public class Bind extends Command {
-    public Bind() {
+public class BindCommand extends Command {
+    public BindCommand() {
         super("bind", "<module name> <key name>");
     }
 

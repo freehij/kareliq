@@ -2,12 +2,12 @@ package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.movement.FastFall;
-import met.freehij.kareliq.module.movement.Step;
+import met.freehij.kareliq.module.player.Step;
 import met.freehij.kareliq.module.player.NoFallDamage;
+import met.freehij.kareliq.module.world.NoClip;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
 import met.freehij.loader.util.InjectionHelper;
-import met.freehij.loader.util.Reflector;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -52,6 +52,14 @@ public class EntityPlayerSPInjection {
                 }
                 if (swing && Aura.INSTANCE.getSettings()[3].getBoolean() && !(boolean) helper.getSelf().getField("isSwinging").get()) helper.getSelf().invoke("swingItem");
             }
+        }
+    }
+
+    @Inject(method = "pushOutOfBlocks")
+    public static void pushOutOfBlocks(InjectionHelper helper) {
+        if (NoClip.INSTANCE.isToggled()) {
+            helper.setReturnValue(false);
+            helper.setCancelled(true);
         }
     }
 }

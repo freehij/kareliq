@@ -80,6 +80,8 @@ public class ClassMappings {
                 "net/minecraft/src/ICamera", "ye");
         add("Session",
                 "net/minecraft/src/Session", "gp");
+        add("EntityClientPlayerMP",
+                "net/minecraft/src/EntityClientPlayerMP", "tf");
     }
 
     private static void add(String reference, String... entries) {

@@ -7,8 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Config extends Command {
-    public Config() {
+public class ConfigCommand extends Command {
+    public ConfigCommand() {
         super("config", "<load|new> <name>");
     }
 

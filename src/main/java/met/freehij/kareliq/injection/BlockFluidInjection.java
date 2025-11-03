@@ -1,6 +1,7 @@
 package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.module.render.Brightness;
+import met.freehij.kareliq.module.world.NoClip;
 import met.freehij.kareliq.module.world.WaterWalking;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
@@ -42,6 +43,7 @@ public class BlockFluidInjection {
 
     @Inject(method = "getCollisionBoundingBoxFromPool")
     public static void getCollisionBoundingBoxFromPool(InjectionHelper helper) throws ClassNotFoundException {
+        if (NoClip.INSTANCE.isToggled()) return;
         if (!WaterWalking.INSTANCE.isToggled()) return;
         Reflector player = InjectionHelper.getMinecraft().getFieldRaw(thePlayer);
         if (Keyboard.isKeyDown(InjectionHelper.getMinecraft()

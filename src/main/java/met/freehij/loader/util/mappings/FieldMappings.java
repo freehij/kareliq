@@ -105,6 +105,16 @@ public class FieldMappings {
                 "username", "b");
         add(ClassMappings.MINECRAFT, "session", "L" + ClassMappings.get("Session") + ";",
                 "session", "k");
+        add(ClassMappings.get("Entity"), "rotationYaw", "F",
+                "rotationYaw", "aS");
+        add(ClassMappings.get("Entity"), "rotationPitch", "F",
+                "rotationPitch", "aT");
+        add(ClassMappings.get("Entity"), "posX", "D",
+                "posX", "aM");
+        add(ClassMappings.get("Entity"), "posY", "D",
+                "posY", "aN");
+        add(ClassMappings.get("Entity"), "posZ", "D",
+                "posZ", "aO");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {

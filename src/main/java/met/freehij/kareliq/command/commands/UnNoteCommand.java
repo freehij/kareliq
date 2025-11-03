@@ -3,8 +3,8 @@ package met.freehij.kareliq.command.commands;
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.command.Command;
 
-public class UnNote extends Command {
-    public UnNote() {
+public class UnNoteCommand extends Command {
+    public UnNoteCommand() {
         super("unnote", "");
     }
 

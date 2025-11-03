@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.command.commands.*;
-import met.freehij.kareliq.injection.BlockInjection;
 import met.freehij.kareliq.injection.GuiButtonInjection;
 import met.freehij.kareliq.injection.GuiIngameInjection;
 import met.freehij.kareliq.module.Module;
@@ -14,12 +13,15 @@ import met.freehij.kareliq.module.client.ToggleNotification;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
 import met.freehij.kareliq.module.movement.FastFall;
-import met.freehij.kareliq.module.movement.Step;
+import met.freehij.kareliq.module.player.NoPush;
+import met.freehij.kareliq.module.player.OutOfBody;
+import met.freehij.kareliq.module.player.Step;
 import met.freehij.kareliq.module.render.WallHack;
 import met.freehij.kareliq.module.world.FastBreak;
 import met.freehij.kareliq.module.movement.GuiWalk;
 import met.freehij.kareliq.module.player.NoFallDamage;
 import met.freehij.kareliq.module.movement.Flight;
+import met.freehij.kareliq.module.world.NoClip;
 import met.freehij.kareliq.module.world.WaterWalking;
 import met.freehij.kareliq.module.render.Brightness;
 import met.freehij.kareliq.module.client.ModuleList;
@@ -57,23 +59,28 @@ public class ClientMain {
                 Brightness.INSTANCE,
                 FastBreak.INSTANCE,
                 ModuleList.INSTANCE,
+                OutOfBody.INSTANCE,
                 OreViewer.INSTANCE,
                 WallHack.INSTANCE,
                 FastFall.INSTANCE,
+                NoPush.INSTANCE,
                 GuiWalk.INSTANCE,
                 TabGui.INSTANCE,
+                NoClip.INSTANCE,
                 Flight.INSTANCE,
                 Aura.INSTANCE,
                 Step.INSTANCE
         };
         commands = new Command[] {
-                new Bind(),
-                new Help(),
-                new ClientName(),
-                new Note(),
-                new UnNote(),
+                new BindCommand(),
+                new HelpCommand(),
+                new ClientNameCommand(),
+                new NoteCommand(),
+                new UnNoteCommand(),
                 new SettingCommand(),
-                new Config(),
+                new ConfigCommand(),
+                new YawCommand(),
+                new PitchCommand()
         };
         loadJsonConfig();
         loaded = true;
