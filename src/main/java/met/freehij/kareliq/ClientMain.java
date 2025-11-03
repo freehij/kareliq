@@ -38,7 +38,7 @@ import java.util.List;
 public class ClientMain {
     public static boolean loaded = false;
     public static String name = "kareliq";
-    public static String version = "1.0dev";
+    public static String version = "1.0_01dev";
     public static String note = "This is note. You can remove it with ;unnote and set with ;note";
     public static final String configDir = "kareliq/configurations/";
     public static String configName = "default";
