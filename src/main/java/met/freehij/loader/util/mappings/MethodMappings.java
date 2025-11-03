@@ -127,6 +127,8 @@ public class MethodMappings {
         add(ClassMappings.get("RenderGlobal"), "renderEntities",
                 "(L" + ClassMappings.get("Vec3D") + ";L" + ClassMappings.get("ICamera") + ";F)V",
                 "renderEntities", "a");
+        add(ClassMappings.get("ScaledResolution"), "getScaledHeight", "()I",
+                "getScaledHeight", "b");
     }
 
     private static void add(String classReference, String methodReference, String descriptor, String... entries) {

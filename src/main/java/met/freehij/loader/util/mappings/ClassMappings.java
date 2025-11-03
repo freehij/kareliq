@@ -78,6 +78,8 @@ public class ClassMappings {
                 "net/minecraft/src/Vec3D", "br");
         add("ICamera",
                 "net/minecraft/src/ICamera", "ye");
+        add("Session",
+                "net/minecraft/src/Session", "gp");
     }
 
     private static void add(String reference, String... entries) {

@@ -1,9 +1,12 @@
 package met.freehij.kareliq.injection;
 
 import met.freehij.kareliq.util.BackgroundUtils;
+import met.freehij.kareliq.util.NotificationUtils;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
+import met.freehij.loader.constant.At;
 import met.freehij.loader.util.InjectionHelper;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 @Injection("GuiScreen")
@@ -31,5 +34,10 @@ public class GuiScreenInjection {
 
 			helper.setCancelled(true);
 		}
+	}
+
+	@Inject(method = "drawScreen", at = At.HEAD)
+	public static void inject(InjectionHelper helper) {
+		NotificationUtils.drawNotifications(helper);
 	}
 }

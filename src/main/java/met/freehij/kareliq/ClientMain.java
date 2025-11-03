@@ -10,6 +10,7 @@ import met.freehij.kareliq.injection.GuiButtonInjection;
 import met.freehij.kareliq.injection.GuiIngameInjection;
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.client.TabGui;
+import met.freehij.kareliq.module.client.ToggleNotification;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
 import met.freehij.kareliq.module.movement.FastFall;
@@ -24,6 +25,7 @@ import met.freehij.kareliq.module.render.Brightness;
 import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.render.OreViewer;
 import met.freehij.kareliq.util.BackgroundUtils;
+import met.freehij.kareliq.util.NotificationUtils;
 import met.freehij.loader.util.InjectionHelper;
 import org.lwjgl.input.Keyboard;
 
@@ -48,6 +50,7 @@ public class ClientMain {
 
     public static void startClient() {
         modules = new Module[] {
+                ToggleNotification.INSTANCE,
                 NoFallDamage.INSTANCE,
                 NoKnockBack.INSTANCE,
                 WaterWalking.INSTANCE,
@@ -85,10 +88,17 @@ public class ClientMain {
         BackgroundUtils.generateClass();
     }
 
+    public static void postStartClient() {
+        String username = InjectionHelper.getMinecraft().getField("session").getField("username").getString();
+        NotificationUtils.notifications.add(new NotificationUtils.Notification("Welcome, " + username + "!", 3500));
+    }
+
     public static void handleKeypress(int key) {
         if(key == Keyboard.KEY_NONE) return;
         for (Module module : ClientMain.modules) {
-            if (module.getKeyBind() == key) module.toggle();
+            if (module.getKeyBind() == key) {
+                module.toggle();
+            }
         }
         GuiIngameInjection.handleKeyPress(key);
     }

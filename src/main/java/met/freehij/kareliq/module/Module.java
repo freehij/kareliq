@@ -1,7 +1,13 @@
 package met.freehij.kareliq.module;
 
+import met.freehij.kareliq.ClientMain;
+import met.freehij.kareliq.module.client.ToggleNotification;
+import met.freehij.kareliq.util.NotificationUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static met.freehij.kareliq.ClientMain.addChatMessage;
 
 public abstract class Module {
     public static Module INSTANCE;
@@ -29,6 +35,12 @@ public abstract class Module {
 
     public void toggle() {
         this.toggled = !this.toggled;
+        if (ClientMain.loaded && ToggleNotification.INSTANCE.isToggled()) {
+            String text = "Toggled " + this.getName() + ": " + (this.isToggled() ? "§aON" : "§cOFF");
+            if (ToggleNotification.INSTANCE.getSettings()[0].getBoolean()) addChatMessage(text);
+            if (ToggleNotification.INSTANCE.getSettings()[1].getBoolean()) NotificationUtils.notifications.add(
+                    new NotificationUtils.Notification(text, (int) ToggleNotification.INSTANCE.getSettings()[2].getDouble() * 1000L));
+        }
     }
 
     public int getKeyBind() {

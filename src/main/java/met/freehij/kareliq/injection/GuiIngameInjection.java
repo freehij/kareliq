@@ -5,16 +5,18 @@ import met.freehij.kareliq.module.*;
 import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.client.ModuleList;
 import met.freehij.kareliq.module.client.TabGui;
+import met.freehij.kareliq.util.NotificationUtils;
 import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
 import met.freehij.loader.constant.At;
 import met.freehij.loader.util.InjectionHelper;
 import met.freehij.loader.util.Reflector;
-import met.freehij.loader.util.mappings.ClassMappings;
 
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+
+import static met.freehij.kareliq.util.Utils.createScaledResolution;
 
 @Injection("GuiIngame")
 public class GuiIngameInjection {
@@ -44,6 +46,7 @@ public class GuiIngameInjection {
             int screenWidth = getScaledWidth(scaledResolution);
 
             renderClientInfo(fontRenderer, screenWidth);
+            NotificationUtils.drawNotifications(helper);
 
             if (ModuleList.INSTANCE.isToggled()) {
                 renderModuleList(helper, fontRenderer, screenWidth);
@@ -69,6 +72,7 @@ public class GuiIngameInjection {
             } else {
                 listeningKeyBind.setKeyBind(keyCode);
             }
+            NotificationUtils.notifications.add(new NotificationUtils.Notification(listeningKeyBind.getName() + " is now bound to " + Keyboard.getKeyName(listeningKeyBind.getKeyBind()), 3000));
             listeningKeyBind = null;
             return;
         }
@@ -125,10 +129,19 @@ public class GuiIngameInjection {
                         if (listeningKeySlider == null) {
                             listeningKeySlider = (SettingSlider)module.getSettings()[selectedSetting];
                         } else {
+                            NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                    listeningKeySlider.getName() + " in " + module.getName() + " to " + listeningKeySlider.getDouble(), 3000));
                             listeningKeySlider = null;
                         }
                     } else {
                         module.getSettings()[selectedSetting].switchValue();
+                        if (module.getSettings()[selectedSetting] instanceof SettingButton) {
+                            NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                    module.getSettings()[selectedSetting].getName() + " in " + module.getName() + " to " + (module.getSettings()[selectedSetting].getBoolean() ? "§aON" : "§cOFF"), 3000));
+                        } else {
+                            NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                    module.getSettings()[selectedSetting].getName() + " in " + module.getName() + " to " + ((SettingModes) module.getSettings()[selectedSetting]).getCurrentMode(), 3000));
+                        }
                     }
                 }
                 break;
@@ -266,16 +279,6 @@ public class GuiIngameInjection {
         return (boolean) mc.getField("gameSettings")
                 .getField("showDebugInfo")
                 .get();
-    }
-
-    private static Reflector createScaledResolution(Reflector mc) throws Exception {
-        String signature = "L" + ClassMappings.get("GameSettings") + ";II";
-        return InjectionHelper.getClazz("ScaledResolution").newInstance(
-                signature,
-                mc.getField("gameSettings").get(),
-                mc.getField("displayWidth").get(),
-                mc.getField("displayHeight").get()
-        );
     }
 
     private static int getScaledWidth(Reflector scaledResolution) {

@@ -33,5 +33,6 @@ public class MinecraftInjection {
     @Inject(method = "startGame", at = At.RETURN)
     public static void startGame(InjectionHelper helper) {
         ClientMain.loadBackgroundPath();
+        ClientMain.postStartClient();
     }
 }

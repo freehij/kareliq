@@ -3,6 +3,7 @@ package met.freehij.kareliq.command.commands;
 import met.freehij.kareliq.ClientMain;
 import met.freehij.kareliq.command.Command;
 import met.freehij.kareliq.module.*;
+import met.freehij.kareliq.util.NotificationUtils;
 import met.freehij.kareliq.util.Utils;
 import org.lwjgl.input.Keyboard;
 import met.freehij.kareliq.module.Module;
@@ -44,10 +45,14 @@ public class SettingCommand extends Command {
                     if (setting.getName().equalsIgnoreCase(args[2])) {
                         if (setting instanceof SettingButton) {
                             setting.setValue(Boolean.parseBoolean(args[3]));
+                            NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                    setting.getName() + " in " + module1.getName() + " to " + (setting.getBoolean() ? "§aON" : "§cOFF"), 3000));
                             return true;
                         } else if (setting instanceof SettingSlider) {
                             try {
                                 setting.setValue(Double.parseDouble(args[3]));
+                                NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                        setting.getName() + " in " + module1.getName() + " to " + setting.getDouble(), 3000));
                                 return true;
                             } catch (NumberFormatException ignored) {
                                 return false;
@@ -56,6 +61,8 @@ public class SettingCommand extends Command {
                             int pos = Utils.elementPosition(((SettingModes) setting).getModes(), args[3]);
                             if (pos != -1) {
                                 setting.setValue(pos);
+                                NotificationUtils.notifications.add(new NotificationUtils.Notification("Set " +
+                                        setting.getName() + " in " + module1.getName() + " to " + ((SettingModes) setting).getCurrentMode(), 3000));
                                 return true;
                             } else {
                                 return false;

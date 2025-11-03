@@ -101,6 +101,10 @@ public class FieldMappings {
                 "keyBindSneak", "v");
         add(ClassMappings.get("GameSettings"), "keyBindJump", "L" + ClassMappings.get("KeyBinding") + ";",
                 "keyBindJump", "q");
+        add(ClassMappings.get("Session"), "username", "Ljava/lang/String;",
+                "username", "b");
+        add(ClassMappings.MINECRAFT, "session", "L" + ClassMappings.get("Session") + ";",
+                "session", "k");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {
