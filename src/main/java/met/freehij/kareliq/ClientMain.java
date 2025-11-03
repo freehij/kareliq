@@ -12,6 +12,7 @@ import met.freehij.kareliq.module.Module;
 import met.freehij.kareliq.module.client.TabGui;
 import met.freehij.kareliq.module.combat.Aura;
 import met.freehij.kareliq.module.combat.NoKnockBack;
+import met.freehij.kareliq.module.movement.FastFall;
 import met.freehij.kareliq.module.movement.Step;
 import met.freehij.kareliq.module.render.WallHack;
 import met.freehij.kareliq.module.world.FastBreak;
@@ -55,6 +56,7 @@ public class ClientMain {
                 ModuleList.INSTANCE,
                 OreViewer.INSTANCE,
                 WallHack.INSTANCE,
+                FastFall.INSTANCE,
                 GuiWalk.INSTANCE,
                 TabGui.INSTANCE,
                 Flight.INSTANCE,

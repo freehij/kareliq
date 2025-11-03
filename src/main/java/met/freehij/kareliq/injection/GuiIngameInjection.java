@@ -235,7 +235,7 @@ public class GuiIngameInjection {
                                         slider == listeningKeySlider ? 0xff00ff00 : 0xffffffff);
                                 drawString(fontRenderer,
                                         String.valueOf(slider.getDouble()),
-                                        finalWidth2 + 12, y3 + 2, Integer.MAX_VALUE);
+                                        finalWidth2 + 12, y3 + 2, selectedSetting == currSetting ? Color.HSBtoRGB(calculateHue(0), 1f, 1f) : Integer.MAX_VALUE);
                             } else {
                                 String stuff = "";
                                 if (setting instanceof SettingButton) {

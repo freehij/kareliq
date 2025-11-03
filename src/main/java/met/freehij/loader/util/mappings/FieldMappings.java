@@ -99,6 +99,8 @@ public class FieldMappings {
                 "displayString", "e");
         add(ClassMappings.get("GameSettings"), "keyBindSneak", "L" + ClassMappings.get("KeyBinding") + ";",
                 "keyBindSneak", "v");
+        add(ClassMappings.get("GameSettings"), "keyBindJump", "L" + ClassMappings.get("KeyBinding") + ";",
+                "keyBindJump", "q");
     }
 
     private static void add(String classReference, String fieldReference, String descriptor, String... entries) {
