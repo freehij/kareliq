@@ -8,14 +8,23 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassBuilder {
+	static class ClassLoaderProxy extends ClassLoader{
+		public ClassLoaderProxy(ClassLoader parent) {
+			super(parent);
+		}
+
+		public Class<?> _defineClass(String name, byte[] b, int off, int len) {
+			return this.defineClass(name, b, off, len);
+		}
+	}
     private final String className;
     private final String superClass;
     private final List<MethodOverride> overrides = new ArrayList<>();
-    private final ClassLoader targetClassLoader;
+    private final ClassLoaderProxy targetClassLoader;
     private static final AtomicInteger counter = new AtomicInteger();
 
     public ClassBuilder(ClassLoader targetClassLoader, String superClass) {
-        this.targetClassLoader = targetClassLoader;
+        this.targetClassLoader = new ClassLoaderProxy(targetClassLoader);
         this.superClass = superClass.replace('.', '/');
         this.className = "GeneratedClass$" + counter.getAndIncrement();
     }
@@ -34,7 +43,7 @@ public class ClassBuilder {
     public Class<?> build() {
         try {
             byte[] bytecode = generateClassBytes();
-            return defineClass(className.replace('/', '.'), bytecode, targetClassLoader);
+            return defineClass(className.replace('/', '.'), bytecode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,13 +175,8 @@ public class ClassBuilder {
         }
     }
 
-    private Class<?> defineClass(String name, byte[] b, ClassLoader loader)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        java.lang.reflect.Method define = ClassLoader.class.getDeclaredMethod(
-                "defineClass", String.class, byte[].class, int.class, int.class
-        );
-        define.setAccessible(true);
-        return (Class<?>) define.invoke(loader, name, b, 0, b.length);
+    private Class<?> defineClass(String name, byte[] b) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    	return this.targetClassLoader._defineClass(name, b, 0, b.length);
     }
 
     private static class MethodOverride {
