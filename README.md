@@ -16,6 +16,5 @@ To use this client on b1.7.3 you need to use [this](https://www.mediafire.com/fi
 - [ ] Replace reflection with MethodHandles where it's possible.
 - [ ] Add mappings to ClassBuilder
 - [ ] Save background image instead of loading it every time as it might get deleted
-
-
 - [ ] Custom buttons for all button types (small button, slider, etc.)
+- [ ] Fabric/Forge loader support (move mappings from before class init to mixininjector)
