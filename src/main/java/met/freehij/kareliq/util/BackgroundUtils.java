@@ -13,16 +13,20 @@ import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class BackgroundUtils {
-    public static String fileName = "/gui/background.png";
-    public static int textureId = 0;
+    public static int textureId = -1;
     public static Class<?> guiEditMainMenu;
 
-    private static Reflector backgroundPath;
+    private static Reflector backgroundPathField;
+    public static Path backgroundPath = Paths.get("kareliq/background");
     private static String errorMessage = null;
 
     public static void generateClass() {
@@ -60,12 +64,12 @@ public class BackgroundUtils {
                 height / 4 + 132, 98, 20, "Apply").get());
         controlList.add(InjectionHelper.getClazz("GuiButton").newInstance("IIIIILjava/lang/String;", 3, width - 152,
                 height - 22, 150, 20, "Button style: " + buttonMode()).get());
-        backgroundPath = InjectionHelper.getClazz("GuiTextField").newInstance(
+        backgroundPathField = InjectionHelper.getClazz("GuiTextField").newInstance(
                 "L" + ClassMappings.get("GuiScreen") + ";L" + ClassMappings.get("FontRenderer")
                         + ";IIIILjava/lang/String;", instance,
                 InjectionHelper.getMinecraft().getField("fontRenderer").get(), width / 2 - 175, height / 4 + 58, 350,
-                20, fileName);
-        backgroundPath.invoke("setMaxStringLength", Integer.MAX_VALUE);
+                20, "");
+        backgroundPathField.invoke("setMaxStringLength", Integer.MAX_VALUE);
     }
 
     public static void onGuiClosed(Object instance, Object[] args) {
@@ -80,18 +84,23 @@ public class BackgroundUtils {
                 InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
                 break;
             case 1:
-                fileName = "/gui/background.png";
-                backgroundPath.invoke("setText", fileName);
+                backgroundPathField.invoke("setText", "");
+                try {
+                    Files.delete(backgroundPath);
+                } catch (Exception ignored) { }
+                textureId = -1;
                 break;
             case 2:
-                String prev = fileName;
-                fileName = backgroundPath.invoke("getText").getString();
-                if (!loadTexture()) {
-                    fileName = prev;
-                    errorMessage = "§cImage does not exist/format not supported.";
-                    break;
+                Path source = Paths.get(backgroundPathField.invoke("getText").getString());
+                if (Files.exists(source)) {
+                    try {
+                        Files.copy(source, backgroundPath, StandardCopyOption.REPLACE_EXISTING);
+                        loadTexture();
+                        InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
+                    } catch (IOException e) {
+                        errorMessage = "§cImage does not exist/format not supported.";
+                    }
                 }
-                InjectionHelper.getMinecraft().invoke("displayGuiScreen", (Object) null);
                 break;
             case 3:
                 GuiButtonInjection.buttonMode = (byte) (GuiButtonInjection.buttonMode == 0 ? 1 : 0);
@@ -104,7 +113,7 @@ public class BackgroundUtils {
     public static void drawScreen(Object instance, Object[] args) {
         Reflector reflector = new Reflector(instance.getClass(), instance);
         reflector.invoke("drawDefaultBackground");
-        backgroundPath.invoke("drawTextBox");
+        backgroundPathField.invoke("drawTextBox");
         InjectionHelper.getMinecraft().getField("fontRenderer").invoke("drawStringWithShadow", errorMessage,
                 reflector.getField("width").getInt()/ 2 - 175, reflector.getField("height").getInt() / 2 - 100,
                 0xffffff);
@@ -114,25 +123,25 @@ public class BackgroundUtils {
     }
 
     public static void mouseClicked(Object instance, Object[] args) {
-        backgroundPath.invoke("mouseClicked", args[0], args[1], args[2]);
+        backgroundPathField.invoke("mouseClicked", args[0], args[1], args[2]);
     }
 
     public static void keyTyped(Object instance, Object[] args) {
-        backgroundPath.invoke("textboxKeyTyped", args[0], args[1]);
+        backgroundPathField.invoke("textboxKeyTyped", args[0], args[1]);
     }
 
     public static void updateScreen(Object instance, Object[] args) {
-        backgroundPath.invoke("updateCursorCounter");
+        backgroundPathField.invoke("updateCursorCounter");
     }
 
     static String buttonMode() {
         return GuiButtonInjection.buttonMode == 0 ? "Vanilla" : "Custom";
     }
 
-    public static boolean loadTexture() {
+    public static void loadTexture() {
         try {
-            BufferedImage image = ImageIO.read(new File(fileName));
-            if (image == null) return false;
+            BufferedImage image = ImageIO.read(backgroundPath.toFile());
+            if (image == null) throw new IOException("file does not exist.");
 
             int width = image.getWidth();
             int height = image.getHeight();
@@ -159,10 +168,8 @@ public class BackgroundUtils {
             GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0,
                     GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
             ClientMain.saveBackgroundPath();
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 }

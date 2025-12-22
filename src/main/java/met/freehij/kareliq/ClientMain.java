@@ -136,7 +136,7 @@ public class ClientMain {
 
     public static void saveBackgroundPath() {
         try {
-            Files.write(Paths.get(configDir + "backgroundPath.txt"), (BackgroundUtils.fileName + "\n"
+            Files.write(Paths.get(configDir + "backgroundPath.txt"), ("not_in_use\n"
                     + GuiButtonInjection.buttonMode).getBytes());
         } catch (Exception ignored) {}
     }
@@ -185,10 +185,9 @@ public class ClientMain {
     public static void loadBackgroundPath() {
         try {
             List<String> a = Files.readAllLines(Paths.get(configDir + "backgroundPath.txt"));
-            BackgroundUtils.fileName = a.get(0);
             GuiButtonInjection.buttonMode = Byte.parseByte(a.get(1));
-            if (!BackgroundUtils.loadTexture()) {
-                BackgroundUtils.fileName = "/gui/background.png";
+            if (Files.exists(BackgroundUtils.backgroundPath)) {
+                BackgroundUtils.loadTexture();
             }
         } catch (Exception ignored) {
         }

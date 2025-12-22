@@ -6,14 +6,13 @@ import met.freehij.loader.annotation.Inject;
 import met.freehij.loader.annotation.Injection;
 import met.freehij.loader.constant.At;
 import met.freehij.loader.util.InjectionHelper;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 @Injection("GuiScreen")
 public class GuiScreenInjection {
 	@Inject(method = "drawBackground")
 	public static void drawBackground(InjectionHelper helper) {
-		if (!BackgroundUtils.fileName.equals("/gui/background.png")) {
+		if (BackgroundUtils.textureId != -1) {
 			int height = helper.getSelf().getField("height").getInt();
 			int width = helper.getSelf().getField("width").getInt();
 			GL11.glDisable(GL11.GL_LIGHTING);
