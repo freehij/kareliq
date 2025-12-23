@@ -18,10 +18,9 @@ public class EntityPlayerSPInjection {
     public static void onLivingUpdate(InjectionHelper helper) throws ClassNotFoundException {
         if (NoFallDamage.INSTANCE.isToggled()) helper.getSelf().setField("fallDistance", 0.F);
         if (Step.INSTANCE.isToggled()) helper.getSelf().setField("stepHeight", (float) Step.INSTANCE.getSettingByName("height").getDouble());
-        if (helper.getSelf().getField("motionY").getDouble() < 0 && FastFall.INSTANCE.isToggled()) {
+        if (!helper.getSelf().invoke("isInWater").getBoolean() && helper.getSelf().getField("motionY").getDouble() < 0 && FastFall.INSTANCE.isToggled()) {
             if (!(FastFall.INSTANCE.getSettings()[0].getBoolean() &&
-            Keyboard.isKeyDown(InjectionHelper.getMinecraft().getField("gameSettings").getField("keyBindJump").getField("keyCode").getInt()) &&
-            helper.getSelf().invokeRaw("isInWater", new Class<?>[0]).getBoolean())) {
+            Keyboard.isKeyDown(InjectionHelper.getMinecraft().getField("gameSettings").getField("keyBindJump").getField("keyCode").getInt()))) {
                 helper.getSelf().setField("motionY", -FastFall.INSTANCE.getSettings()[1].getDouble());
             }
         }
